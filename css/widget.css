@@ -1,0 +1,95 @@
+.hero-section {
+    /* ใช้ Gradient สีเขียวทับรูปภาพ เพื่อให้เหมือนในตัวอย่าง */
+    background: linear-gradient(135deg, rgba(46, 125, 107, 0.95), rgba(32, 90, 77, 0.85)),
+                url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=1920'); 
+    background-size: cover;
+    background-position: center;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    
+}
+
+/* ช่อง ตำ */
+.relative-z2 {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 900px;
+}
+
+/* Search Box (ลอยเด่น) */
+.search-box-container {
+    margin-top: 30px;
+}
+
+/* รับที่ไหน - ไปที่ไหน */
+.form-floating label {
+    padding-left: 0; 
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* เส้นใต้ */
+.form-control {
+    font-weight: 600;
+    padding-left: 0;
+    border-bottom: 1px solid #eee !important;
+    border-radius: 0;
+}
+.form-control:focus {
+    border-color: var(--accent-green) !important;
+}
+
+
+/* ปุ่ม ค้นหาเที่ยวรถ */
+.btn-dark-green {
+    background-color: var(--dark-green);
+    color: white;
+    transition: 0.3s;
+}
+.btn-dark-green:hover {
+    background-color: #14453a;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   Custom Hero Text (จัดช่องไฟให้สวย)
+   ========================================= */
+
+/* 1. หัวข้อหลัก (H1) */
+.hero-title {
+    font-size: 3.5rem;          /* ขนาดตัวหนังสือใหญ่ (เท่า display-4) */
+    font-weight: 700;           /* ตัวหนา */
+    line-height: 1.4;           /* ⭐ สำคัญ: แก้ปัญหาสระลอยทับกัน */
+    margin-bottom: 25px;        /* เว้นระยะห่างจากบรรทัดล่าง */
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3); /* เพิ่มเงาให้ตัวหนังสือลอยเด่น */
+    letter-spacing: 1px;        /* เพิ่มระยะห่างตัวอักษรนิดนึงให้อ่านง่าย */
+}
+
+/* 2. ข้อความรอง (P) */
+.hero-subtitle {
+    font-size: 1.3rem;          /* ขนาดกำลังดี */
+    font-weight: 300;           /* ตัวบาง (Light) */
+    color: rgba(255, 255, 255, 0.9); /* สีขาวโปร่งแสงนิดๆ ดูไม่แข็ง */
+    line-height: 1.6;           /* อ่านสบายตา */
+    margin-bottom: 50px;        /* ⭐ ดันกล่องค้นหาลงไปให้ห่างๆ (ไม่อึดอัด) */
+    max-width: 800px;           /* บีบข้อความไม่ให้ยาวเกินไป */
+    margin-left: auto;          /* จัดกึ่งกลาง */
+    margin-right: auto;         /* จัดกึ่งกลาง */
+}
+
+/* --- Responsive: ปรับให้พอดีมือถือ --- */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;      /* ลดขนาดลงเมื่อเปิดในมือถือ */
+        line-height: 1.3;
+    }
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+}

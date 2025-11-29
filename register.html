@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สมัครสมาชิก - Trip Sync</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+
+            <!-- ฝั่งซ้าย: Hero / Benefit -->
+            <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-center align-items-center text-white login-bg relative-z2">
+                <div class="login-overlay"></div>
+                <div class="text-center relative-z2 p-5">
+                    <h1 class="display-3 fw-bold mb-3">Join TripSync</h1>
+                    <p class="fs-4 fw-light">
+                        เริ่มต้นประสบการณ์การเดินทางที่เหนือกว่า<br>
+                        สมัครสมาชิกวันนี้ ฟรี!
+                    </p>
+
+                    <div class="mt-5 text-start d-inline-block">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-check-circle-fill text-green fs-4 me-3"></i>
+                            <span class="fs-5">สะสมแต้มทุกการเดินทาง</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-check-circle-fill text-green fs-4 me-3"></i>
+                            <span class="fs-5">ส่วนลดพิเศษเฉพาะสมาชิก</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill text-green fs-4 me-3"></i>
+                            <span class="fs-5">จัดการการจองได้ง่ายๆ</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="position-absolute bottom-0 mb-4 relative-z2 text-white-50 small">
+                    &copy; 2025 Trip Sync Platform. All rights reserved.
+                </div>
+            </div>
+
+            <!-- ฝั่งขวา: ฟอร์มสมัครสมาชิก -->
+            <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white overflow-auto">
+                <div class="login-form-container py-5">
+
+                    <div class="text-center mb-4 d-lg-none">
+                        <h2 class="fw-bold text-green"><i class="bi bi-bezier2"></i> TripSync</h2>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="fw-bold text-dark-green">สร้างบัญชีผู้ใช้ใหม่ 🚀</h2>
+                        <p class="text-muted">กรอกข้อมูลเพื่อเริ่มต้นใช้งาน</p>
+                    </div>
+
+                    <form>
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control bg-light border-0" id="firstname" placeholder="ชื่อจริง">
+                                    <label for="firstname" class="text-muted">ชื่อจริง / First Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control bg-light border-0" id="lastname" placeholder="นามสกุล">
+                                    <label for="lastname" class="text-muted">นามสกุล / Last Name</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control bg-light border-0" id="email" placeholder="name@example.com">
+                            <label for="email" class="text-muted">อีเมล / E-mail</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control bg-light border-0" id="birthdate" placeholder="DD/MM/YYYY">
+                            <label for="birthdate" class="text-muted">วันเกิด / Birthday (DD/MM/YYYY)</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="tel" class="form-control bg-light border-0" id="phone" placeholder="08x-xxx-xxxx">
+                            <label for="phone" class="text-muted">เบอร์โทรศัพท์มือถือ / Telephone Number</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control bg-light border-0" id="password" placeholder="Password">
+                            <label for="password" class="text-muted">รหัสผ่าน / Password</label>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control bg-light border-0" id="confirm_password" placeholder="Confirm Password">
+                            <label for="confirm_password" class="text-muted">ยืนยันรหัสผ่าน / Confirm Password</label>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label small text-muted" for="terms">
+                                ฉันยอมรับ
+                                <a href="#" class="text-green text-decoration-none">ข้อกำหนดและเงื่อนไข</a>
+                                และ
+                                <a href="#" class="text-green text-decoration-none">นโยบายความเป็นส่วนตัว</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark-green w-100 py-3 rounded-3 fw-bold shadow-sm mb-4">
+                            สมัครสมาชิก
+                        </button>
+
+                        <div class="text-center text-muted small mb-3">- หรือสมัครด้วย -</div>
+                        <div class="row g-2 mb-4">
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-light w-100 border text-dark py-2">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="20" class="me-2">
+                                    Google
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-light w-100 border text-dark py-2">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" width="20" class="me-2">
+                                    Facebook
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-4 border-top pt-4">
+                        <p class="text-muted">
+                            มีบัญชีผู้ใช้อยู่แล้ว?
+                            <a href="login.html" class="text-green fw-bold text-decoration-none">
+                                เข้าสู่ระบบที่นี่
+                            </a>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#birthdate", {
+            dateFormat: "d/m/Y",
+            allowInput: true
+        });
+    </script>
+
+    <script type="module" src="js/register.js"></script>
+
+</body>
+</html>

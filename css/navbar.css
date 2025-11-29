@@ -1,0 +1,167 @@
+/* Navbar */
+.navbar {
+    /* พื้นหลังสีขาว โปร่งแสง 85% */
+    background-color: rgba(255, 255, 255, 0.85);
+    /* คำสั่งทำให้พื้นหลังเบลอ (เหมือนกระจกฝ้า) */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(10px); /* สำหรับ Safari */
+    
+    padding: 15px 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05); /* เงาจางๆ */
+    transition: 0.3s;
+}
+
+/* แก้สีโลโก้เป็นสีเขียวหลัก */
+.navbar-brand {
+    color: var(--main-green) !important;
+    font-size: 1.5rem;
+}
+
+/* แก้สีลิงก์เป็นสีเทาเข้ม (เพื่อให้มองเห็นบนพื้นขาว) */
+.nav-link {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333 !important; /* สีเทาเข้ม */
+    margin: 0 5px;
+}
+
+.nav-link:hover {
+    color: var(--main-green) !important; /* ชี้แล้วเป็นสีเขียว */
+}
+
+/* แก้ปุ่มเข้าสู่ระบบ ให้เด่นขึ้น (พื้นเขียว ตัวขาว) */
+.btn-white-pill {
+    background-color: var(--main-green);
+    color: white;
+    border-radius: 50px;
+    transition: 0.3s;
+    border: 2px solid transparent;
+}
+
+.btn-white-pill:hover {
+    background-color: transparent;
+    color: var(--main-green);
+    border-color: var(--main-green);
+}
+/* --- Navbar Premium Style --- */
+
+/* 1. ตัว Navbar หลัก */
+.navbar {
+    /* พื้นหลังขาวขุ่น + เบลอ (Glassmorphism) */
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* เงาจางๆ ด้านล่าง */
+    padding: 12px 0; /* เพิ่มความสูงนิดนึงให้ดูโปร่ง */
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-size: 1.6rem;
+    color: #2E7D6B !important; /* สีเขียวธีมหลัก */
+}
+
+/* 2. ลิงก์เมนูหลัก (ตัวบน) */
+.nav-link {
+    font-weight: 600;
+    color: #555 !important; /* สีเทาเข้ม อ่านง่าย */
+    padding: 8px 16px !important; /* ระยะห่างระหว่างเมนู */
+    border-radius: 50px; /* เตรียมไว้ทำปุ่มมน */
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.show {
+    color: #2E7D6B !important; /* ชี้แล้วเป็นสีเขียว */
+    background-color: #deffe8;  /* พื้นหลังเขียวอ่อนจางๆ */
+}
+
+/* 3. กล่อง Dropdown (พระเอกงานนี้) */
+.dropdown-menu {
+    border: none; /* ลบเส้นขอบแข็งๆ */
+    border-radius: 16px; /* มุมมนสวยๆ */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); /* เงาลอยเด่น */
+    padding: 10px; /* เว้นขอบใน */
+    margin-top: 15px; /* เว้นระยะห่างจาก Navbar นิดนึง */
+    
+    /* Animation ตอนโผล่ */
+    animation: slideUp 0.3s ease forwards;
+    display: none; /* ซ่อนไว้ก่อน */
+}
+
+/* ทำให้ Dropdown โชว์เมื่อมี Class show */
+.dropdown-menu.show {
+    display: block;
+}
+
+/* 4. รายการข้างใน Dropdown */
+.dropdown-item {
+    font-weight: 500;
+    color: #666;
+    padding: 10px 20px;
+    border-radius: 10px; /* มุมมนข้างใน */
+    transition: all 0.2s ease;
+    margin-bottom: 2px;
+}
+
+/* Effect ตอนชี้เมนูย่อย */
+.dropdown-item:hover {
+    background-color: #2E7D6B; /* พื้นหลังเขียว */
+    color: white; /* ตัวหนังสือขาว */
+    transform: translateX(5px); /* ขยับไปขวานิดนึง */
+}
+
+/* 5. ปุ่มเข้าสู่ระบบ */
+.btn-green-nav {
+    background-color: #2E7D6B;
+    color: white;
+    font-weight: bold;
+    border-radius: 50px;
+    padding: 8px 25px;
+    box-shadow: 0 4px 10px rgba(46, 125, 107, 0.3);
+    transition: 0.3s;
+    text-decoration: none; /* ลบขีดเส้นใต้ */
+}
+
+.btn-green-nav:hover {
+    background-color: #1b5e4f; /* เข้มขึ้น */
+    transform: translateY(-2px); /* ลอยขึ้น */
+    color: white;
+}
+
+/* Animation */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Custom Login Popup Tabs --- */
+
+/* ปรับสี Tab ตอนเลือก (Active) */
+.nav-pills .nav-link.active {
+    background-color: var(--dark-green); /* สีเขียวเข้มแบบ TripSync */
+    color: white !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* ปรับสี Tab ตอนยังไม่เลือก */
+.nav-pills .nav-link {
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.nav-pills .nav-link:hover:not(.active) {
+    background-color: #e9ecef;
+    color: var(--main-green);
+}
+
+/* เส้นกั้น Social Login ให้ดูบางๆ */
+hr {
+    margin: 0;
+    border-top: 1px solid #dee2e6;
+}

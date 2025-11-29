@@ -1,0 +1,83 @@
+/* --- Login Page Styles --- */
+
+/* พื้นหลังฝั่งซ้าย */
+.login-bg {
+    background: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021'); /* รูปถนนสวยๆ */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+/* แผ่นฟิล์มสีเขียวทับรูป */
+.login-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(46, 125, 107, 0.95), rgba(32, 90, 77, 0.8));
+    z-index: 1;
+}
+
+.relative-z2 {
+    position: relative;
+    z-index: 2;
+}
+
+/* ป้ายใสๆ บนรูป */
+.bg-white-glass {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    border-radius: 30px;
+    display: inline-block;
+    font-weight: 300;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* กล่องฟอร์มฝั่งขวา */
+.login-form-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+}
+
+/* ปุ่มสลับ Tab (ลูกค้า/คนขับ) */
+.nav-pills .nav-link {
+    color: #6c757d;
+    transition: 0.3s;
+}
+.nav-pills .nav-link.active {
+    background-color: #2E7D6B; /* สีเขียวธีม */
+    color: white;
+    box-shadow: 0 4px 10px rgba(46, 125, 107, 0.3);
+}
+
+/* ช่องกรอกข้อมูล */
+.form-control:focus {
+    background-color: white;
+    border: 1px solid #2E7D6B !important;
+    box-shadow: 0 0 0 4px rgba(46, 125, 107, 0.1);
+}
+
+/* ปุ่ม Login */
+.btn-dark-green:hover {
+    transform: translateY(-2px);
+}
+/* --- 🔧 แก้บั๊กปฏิทินลูกศรยักษ์ --- */
+
+/* บังคับขนาดไอคอน SVG ในปฏิทินให้เล็กเท่ามด */
+.flatpickr-calendar svg {
+    width: 14px !important;
+    height: 14px !important;
+    fill: inherit !important; /* ให้สีตามปกติ */
+}
+
+/* ปรับตำแหน่งปุ่มลูกศรซ้ายขวา */
+.flatpickr-prev-month, .flatpickr-next-month {
+    height: 30px !important;
+    width: 30px !important;
+    padding: 5px !important;
+}
+
+/* แก้สีลูกศรให้เป็นสีเขียวเข้าธีม (แถมให้ครับ) */
+.flatpickr-prev-month svg, .flatpickr-next-month svg {
+    fill: #2E7D6B !important;
+}

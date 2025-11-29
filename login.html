@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ - Trip Sync</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            
+            <!-- ฝั่งซ้าย (ภาพ + สโลแกน) -->
+            <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-center align-items-center text-white login-bg relative-z2">
+                <div class="login-overlay"></div>
+
+                <div class="text-center relative-z2 p-5">
+                    <h1 class="display-3 fw-bold mb-3">
+                        <i class="bi bi-bezier2"></i> TripSync
+                    </h1>
+                    <p class="fs-4 fw-light">
+                        แพลตฟอร์มบริหารจัดการยานพาหนะ<br>และการเดินทางครบวงจร
+                    </p>
+                    <div class="mt-5">
+                        <div class="badge bg-white-glass px-3 py-2 me-2">
+                            <i class="bi bi-shield-check text-green"></i> ปลอดภัย
+                        </div>
+                        <div class="badge bg-white-glass px-3 py-2 me-2">
+                            <i class="bi bi-lightning-charge text-warning"></i> รวดเร็ว
+                        </div>
+                        <div class="badge bg-white-glass px-3 py-2">
+                            <i class="bi bi-graph-up text-primary"></i> คุ้มค่า
+                        </div>
+                    </div>
+                </div>
+
+                <div class="position-absolute bottom-0 mb-4 relative-z2 text-white-50 small">
+                    &copy; 2025 Trip Sync Platform. All rights reserved.
+                </div>
+            </div>
+
+            <!-- ฝั่งขวา (ฟอร์มล็อกอิน) -->
+            <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white">
+                <div class="login-form-container">
+                    
+                    <div class="text-center mb-5 d-lg-none">
+                        <h2 class="fw-bold text-green">
+                            <i class="bi bi-bezier2"></i> TripSync
+                        </h2>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="fw-bold text-dark-green">ยินดีต้อนรับกลับมา! 👋</h2>
+                        <p class="text-muted">กรุณาเข้าสู่ระบบเพื่อจัดการการเดินทางของคุณ</p>
+                    </div>
+
+                    <!-- แท็บ เลือกประเภทผู้ใช้ -->
+                    <ul class="nav nav-pills nav-fill mb-4 p-1 bg-light rounded-pill" id="loginTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link active rounded-pill fw-bold"
+                                id="customer-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#customer"
+                                type="button"
+                                role="tab"
+                                aria-controls="customer"
+                                aria-selected="true">
+                                สำหรับผู้ใช้งาน
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link rounded-pill fw-bold"
+                                id="driver-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#driver"
+                                type="button"
+                                role="tab"
+                                aria-controls="driver"
+                                aria-selected="false">
+                                สำหรับคนขับ/พาร์ทเนอร์
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!-- แท็บ: ผู้ใช้งานทั่วไป -->
+                        <div class="tab-pane fade show active" id="customer" role="tabpanel" aria-labelledby="customer-tab">
+                            <form id="login-form">
+                                <div class="form-floating mb-3">
+                                    <input
+                                        type="text"
+                                        class="form-control bg-light border-0"
+                                        id="login-email"
+                                        placeholder="อีเมล หรือ เบอร์โทรศัพท์">
+                                    <label for="login-email" class="text-muted">อีเมล หรือ เบอร์โทรศัพท์</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input
+                                        type="password"
+                                        class="form-control bg-light border-0"
+                                        id="login-password"
+                                        placeholder="Password">
+                                    <label for="login-password" class="text-muted">รหัสผ่าน</label>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="remember">
+                                        <label class="form-check-label text-muted small" for="remember">
+                                            จดจำฉันไว้
+                                        </label>
+                                    </div>
+                                    <a href="#" class="text-green small fw-bold text-decoration-none">ลืมรหัสผ่าน?</a>
+                                </div>
+
+                                <button type="submit" class="btn btn-dark-green w-100 py-3 rounded-3 fw-bold shadow-sm mb-4">
+                                    เข้าสู่ระบบ
+                                </button>
+
+                                <div class="text-center text-muted small mb-4">- หรือเข้าสู่ระบบด้วย -</div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col">
+                                        <button type="button" class="btn btn-outline-light w-100 border text-dark py-2">
+                                            <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="20" class="me-2">
+                                            Google
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <button type="button" class="btn btn-outline-light w-100 border text-dark py-2">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" width="20" class="me-2">
+                                            Facebook
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- แท็บ: คนขับ / พาร์ทเนอร์ (ยังไม่ผูก Firebase) -->
+                        <div class="tab-pane fade" id="driver" role="tabpanel" aria-labelledby="driver-tab">
+                            <form>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control bg-light border-0" id="driver-id"
+                                           placeholder="รหัสพนักงานขับรถ">
+                                    <label for="driver-id" class="text-muted">รหัสพนักงานขับรถ / พาร์ทเนอร์</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control bg-light border-0" id="driver-password"
+                                           placeholder="Password">
+                                    <label for="driver-password" class="text-muted">รหัสผ่าน</label>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <span></span>
+                                    <a href="#" class="text-green small fw-bold text-decoration-none">
+                                        สมัครเป็นพาร์ทเนอร์
+                                    </a>
+                                </div>
+
+                                <button type="submit" class="btn btn-dark-green w-100 py-3 rounded-3 fw-bold shadow-sm mb-4">
+                                    เข้าสู่ระบบคนขับ / พาร์ทเนอร์
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-5">
+                        <p class="text-muted">
+                            ยังไม่มีบัญชีผู้ใช้?
+                            <a href="register.html" class="text-green fw-bold text-decoration-none">
+                                สมัครสมาชิกใหม่
+                            </a>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ผูก Firebase Login -->
+    <script type="module" src="js/login.js"></script>
+</body>
+</html>

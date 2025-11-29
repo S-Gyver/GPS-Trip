@@ -1,0 +1,170 @@
+<nav class="navbar navbar-expand-lg fixed-top navbar-light">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">
+            <i class="bi bi-bezier2"></i> TripSync
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+
+                <!-- เมนู เดินทาง / วางแผน -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        เดินทาง / วางแผน
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="privileges.html">สิทธิประโยชน์สมาชิก</a></li>
+                        <li><a class="dropdown-item" href="#">ตารางเดินรถ</a></li>
+                        <li><a class="dropdown-item" href="#">ปลายทาง</a></li>
+                        <li><a class="dropdown-item" href="#">โปรโมชั่น</a></li>
+                    </ul>
+                </li>
+
+                <!-- เมนู บริการ -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        บริการ
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">เลื่อนตั๋วเดินทาง</a></li>
+                        <li><a class="dropdown-item" href="#">เงื่อนไขการเดินทาง</a></li>
+                        <li><a class="dropdown-item" href="#">ช่วยเหลือลูกค้า</a></li>
+                        <li><a class="dropdown-item" href="#">รับตั๋วออนไลน์</a></li>
+                        <li><a class="dropdown-item" href="#">คืนตั๋วออนไลน์</a></li>
+                    </ul>
+                </li>
+
+                <!-- เมนู เกี่ยวกับเรา -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        เกี่ยวกับเรา
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">บริการของเรา</a></li>
+                        <li><a class="dropdown-item" href="#">ข่าวสารประชาสัมพันธ์</a></li>
+                        <li><a class="dropdown-item" href="#">แนะนำวิธีจองตั๋ว</a></li>
+                    </ul>
+                </li>
+
+                <!-- เมนู ติดต่อเรา -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        ติดต่อเรา
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">ติดต่อเรา</a></li>
+                        <li><a class="dropdown-item" href="#">พื้นที่โฆษณา</a></li>
+                        <li><a class="dropdown-item" href="#">ร่วมงานกับเรา</a></li>
+                    </ul>
+                </li>
+
+                <!-- ปุ่มเข้าสู่ระบบ + popup -->
+                <li class="nav-item dropdown ms-3" id="login-btn-group">
+                    <a class="btn btn-white-pill px-4 fw-bold dropdown-toggle no-caret" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                        <i class="bi bi-person-circle me-1"></i> เข้าสู่ระบบ
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-end p-4 shadow-lg login-dropdown" style="width: 380px;">
+
+                        <!-- แท็บผู้ใช้งาน / คนขับ -->
+                        <ul class="nav nav-pills nav-fill mb-4 p-1 bg-light rounded-pill border" id="loginTab"
+                            role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active rounded-pill fw-bold small py-2" id="user-tab"
+                                    data-bs-toggle="pill" data-bs-target="#user-login" type="button">
+                                    สำหรับผู้ใช้งาน
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link rounded-pill fw-bold small py-2" id="driver-tab"
+                                    data-bs-toggle="pill" data-bs-target="#driver-login" type="button">
+                                    สำหรับคนขับ
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <!-- แท็บ: ผู้ใช้งาน -->
+                            <div class="tab-pane fade show active" id="user-login">
+                                <form id="login-form">
+                                    <div class="mb-3">
+                                        <input type="text" id="login-email" class="form-control py-2"
+                                            placeholder="อีเมล / เบอร์โทรศัพท์">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="password" id="login-password" class="form-control py-2"
+                                            placeholder="รหัสผ่าน">
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-4 small">
+                                        <a href="register.html"
+                                            class="text-green text-decoration-none fw-bold">สมัครสมาชิก</a>
+                                        <a href="#" class="text-muted text-decoration-none">ลืมรหัสผ่าน?</a>
+                                    </div>
+                                    <button type="submit" id="btn-login-submit"
+                                        class="btn btn-dark-green w-100 fw-bold py-2 rounded-3">
+                                        <i class="bi bi-box-arrow-in-right"></i> เข้าสู่ระบบ
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- แท็บ: คนขับ -->
+                            <div class="tab-pane fade" id="driver-login">
+                                <form>
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control py-2" placeholder="รหัสพนักงานขับรถ">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="password" class="form-control py-2" placeholder="รหัสผ่าน">
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-4 small">
+                                        <a href="#"
+                                            class="text-green text-decoration-none fw-bold">สมัครเป็นพาร์ทเนอร์</a>
+                                        <a href="#" class="text-muted text-decoration-none">ลืมรหัสผ่าน?</a>
+                                    </div>
+                                    <button type="submit" class="btn btn-dark-green w-100 fw-bold py-2 rounded-3">
+                                        <i class="bi bi-truck"></i> เข้าสู่ระบบคนขับ
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="position-relative text-center my-4">
+                            <hr class="text-muted opacity-25">
+                            <span
+                                class="position-absolute top-50 start-50 translate-middle bg-white px-2 text-muted small">
+                                หรือเข้าสู่ระบบด้วย
+                            </span>
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col">
+                                <button class="btn btn-outline-light w-100 border text-dark py-1 small">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="16"
+                                        class="me-1"> Google
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-outline-light w-100 border text-dark py-1 small">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
+                                        width="16" class="me-1"> Facebook
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>

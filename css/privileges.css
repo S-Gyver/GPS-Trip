@@ -1,0 +1,65 @@
+/* --- Privilege Page Styles --- */
+
+/* Hero Section */
+.privilege-header {
+    background: linear-gradient(to right, #2E7D6B, #1b5e4f); /* สีเขียวธีม */
+    padding: 120px 0 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ลวดลายพื้นหลังจางๆ */
+.privilege-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 20%),
+                      radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 20%);
+    z-index: 1;
+}
+
+.relative-z2 { position: relative; z-index: 2; }
+
+/* กล่องคะแนนโปร่งใส */
+.bg-white-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* --- Membership Tier Cards --- */
+.tier-card {
+    border-radius: 16px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+/* สีหัวตาราง */
+.bg-silver { background: #e0e0e0; color: #555; }
+.bg-gold { background: linear-gradient(45deg, #FFD700, #FFC107); color: #5c4d00; }
+.bg-platinum { background: linear-gradient(45deg, #2E7D6B, #004d40); color: white; }
+
+.bg-light-gold { background-color: #fffbf0; }
+
+/* การ์ดตรงกลางขยายใหญ่หน่อย */
+.transform-scale {
+    transform: scale(1.05);
+    z-index: 2;
+    border: 2px solid #FFD700;
+}
+
+/* --- Coupon Cards --- */
+.coupon-card {
+    border: 1px dashed #ccc; /* ขอบเส้นประเหมือนคูปอง */
+    transition: 0.3s;
+}
+.coupon-card:hover {
+    border-color: var(--main-green);
+    background-color: #f9fffc !important;
+    transform: translateY(-3px);
+}
+
+/* สีพื้นหลังไอคอน */
+.bg-green-light { background-color: #e8f5e9; }
+.bg-orange-light { background-color: #fff3e0; }
+.bg-info-light { background-color: #e0f7fa; }
