@@ -1,0 +1,19 @@
+.ts-field{ display:block; width:100%; }
+.ts-field__label{ display:block; font-weight:700; margin:0 0 8px; color:var(--ts-text); }
+
+.ts-input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid var(--ts-border);
+  outline:none;
+  font-size:14px;
+}
+
+.ts-input:focus{
+  border-color: var(--ts-orange);
+  box-shadow: 0 0 0 3px rgba(255,122,0,.15);
+}
+
+.ts-input.is-error{ border-color: #e11d48; }
+.ts-field__error{ display:block; margin-top:6px; font-size:12px; color:#e11d48; }

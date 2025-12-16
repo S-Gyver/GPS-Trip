@@ -1,0 +1,69 @@
+.ts-btn{
+  width: 100%;
+  border: 0;
+  border-radius: 16px;
+  padding: 12px 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .06s ease, opacity .12s ease, box-shadow .12s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  user-select: none;
+}
+
+.ts-btn:active{ transform: translateY(1px); }
+
+.ts-btn:disabled{
+  opacity: .65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== Variants ===== */
+.ts-btn--primary{
+  background: var(--ts-orange, #f97316);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(249, 115, 22, .28);
+}
+
+.ts-btn--primary:hover{
+  box-shadow: 0 12px 28px rgba(249, 115, 22, .34);
+}
+
+.ts-btn--ghost{
+  background: transparent;
+  color: var(--ts-orange, #f97316);
+  border: 1px solid rgba(249, 115, 22, .35);
+}
+
+.ts-btn--ghost:hover{
+  background: rgba(249, 115, 22, .08);
+}
+
+.ts-btn--outline{
+  background: #fff;
+  color: #111827;
+  border: 1px solid rgba(17, 24, 39, .12);
+}
+
+/* ===== Spinner ===== */
+.ts-btn__spinner{
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,.55);
+  border-top-color: rgba(255,255,255,1);
+  animation: tsSpin .75s linear infinite;
+}
+
+.ts-btn--ghost .ts-btn__spinner,
+.ts-btn--outline .ts-btn__spinner{
+  border-color: rgba(249,115,22,.35);
+  border-top-color: rgba(249,115,22,1);
+}
+
+@keyframes tsSpin{
+  to { transform: rotate(360deg); }
+}

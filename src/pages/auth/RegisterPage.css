@@ -1,0 +1,77 @@
+/* ใช้สไตล์เดียวกับ Login */
+@import './LoginPage.css';
+
+/* =========================
+   Success alert (สมัครสำเร็จ)
+========================= */
+.auth-success{
+  background: rgba(34,197,94,.10);
+  border: 1px solid rgba(34,197,94,.25);
+  color:#15803d;
+  padding:10px 12px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+/* =========================
+   Divider "หรือ"
+========================= */
+.auth-divider{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  color: #9ca3af;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.auth-divider::before,
+.auth-divider::after{
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+/* =========================
+   Google Login Button
+========================= */
+.google-login-btn{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background .12s ease, box-shadow .12s ease, transform .06s ease;
+}
+
+.google-login-btn:hover{
+  background: #f9fafb;
+  box-shadow: 0 6px 16px rgba(0,0,0,.06);
+}
+
+.google-login-btn:active{
+  transform: translateY(1px);
+}
+
+.google-login-btn:disabled{
+  opacity: .6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ไอคอน Google */
+.google-icon{
+  width: 20px;
+  height: 20px;
+  display: block;
+}

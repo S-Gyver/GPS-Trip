@@ -1,0 +1,6 @@
+.page-main{
+  max-width: var(--ts-max);
+  margin: 0 auto;
+  padding: 92px 16px 28px; /* กัน navbar fixed + มีระยะข้าง */
+  min-height: calc(100vh - 120px);
+}

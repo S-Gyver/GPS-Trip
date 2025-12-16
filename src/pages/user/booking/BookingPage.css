@@ -1,0 +1,652 @@
+/* =========================
+   Booking Page (TripSync)
+   ========================= */
+
+.bk-wrap{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 14px;
+}
+
+.bk-title{
+  margin:0 0 6px;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.2px;
+}
+
+.bk-sub{
+  margin:0 0 16px;
+  color: var(--ts-muted);
+  font-size: 14px;
+}
+
+/* alert */
+.bk-alert{
+  background: rgba(225,29,72,.08);
+  border: 1px solid rgba(225,29,72,.25);
+  color:#be123c;
+  padding:12px 14px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  font-weight: 800;
+}
+
+/* card */
+.bk-card{
+  border: 1px solid var(--ts-border);
+  border-radius: 22px;
+  background: #fff;
+  padding: 18px;
+  display: grid;
+  gap: 16px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.04);
+}
+
+/* top area layout (vehicle/trip/passengers) */
+.bk-grid-top{
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr .8fr;
+  gap: 14px;
+  align-items: end;
+}
+
+@media (max-width: 900px){
+  .bk-grid-top{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* normal grid (inside day card) */
+.bk-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 720px){
+  .bk-grid{ grid-template-columns: 1fr; }
+}
+
+/* section */
+.bk-section{
+  display: grid;
+  gap: 8px;
+}
+
+.bk-label{
+  font-weight: 900;
+  color: var(--ts-text, #111);
+  font-size: 14px;
+}
+
+/* segmented options */
+.bk-options{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.bk-option{
+  border: 1px solid var(--ts-border);
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+  user-select: none;
+  line-height: 1;
+  box-shadow: 0 6px 14px rgba(0,0,0,.04);
+}
+
+.bk-option:hover{
+  border-color: rgba(255, 136, 0, .55);
+  transform: translateY(-1px);
+}
+
+.bk-option:active{
+  transform: translateY(0);
+  box-shadow: 0 3px 10px rgba(0,0,0,.06);
+}
+
+.bk-option:focus-visible{
+  outline: 3px solid rgba(255, 136, 0, .25);
+  outline-offset: 2px;
+}
+
+/* active state = TripSync orange */
+.bk-option.is-active{
+  background: var(--ts-orange);
+  border-color: var(--ts-orange);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(255,136,0,.22);
+}
+
+/* days */
+.bk-days{
+  display:grid;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.bk-days-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap: 10px;
+}
+
+.bk-days-head h2{
+  margin:0;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+/* add day button (make it orange) */
+.bk-addday{
+  border: 0;
+  background: var(--ts-orange);
+  color: #fff;
+  border-radius: 16px;
+  padding: 10px 14px;
+  font-weight: 900;
+  cursor:pointer;
+  box-shadow: 0 10px 22px rgba(255,136,0,.20);
+  transition: transform .08s ease, filter .18s ease;
+  white-space: nowrap;
+}
+
+.bk-addday:hover{
+  filter: brightness(.98);
+  transform: translateY(-1px);
+}
+
+.bk-addday:disabled{
+  opacity: .55;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* day card */
+.bk-daycard{
+  border: 1px solid var(--ts-border);
+  border-radius: 20px;
+  padding: 14px;
+  background: #fff;
+}
+
+.bk-daytitle{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.bk-daytitle b{
+  font-size: 14px;
+  font-weight: 900;
+}
+
+/* remove day */
+.bk-remove{
+  background: rgba(225,29,72,.10);
+  border: 1px solid rgba(225,29,72,.22);
+  color:#be123c;
+  border-radius:14px;
+  padding:8px 10px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.bk-remove:hover{
+  background: rgba(225,29,72,.14);
+}
+
+/* submit row */
+.bk-actions{
+  display:flex;
+  justify-content:flex-end;
+  margin-top: 2px;
+}
+
+.bk-hint{
+  margin:0;
+  font-size:13px;
+  color:var(--ts-muted);
+}
+
+/* ===== stepper ===== */
+.bk-stepper{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 0 0 14px;
+}
+
+@media (max-width: 860px){
+  .bk-stepper{ grid-template-columns: 1fr 1fr; }
+}
+
+.bk-step{
+  border: 1px solid var(--ts-border);
+  border-radius: 16px;
+  background: #fff;
+  padding: 10px 12px;
+  font-weight: 900;
+  font-size: 13px;
+  color: var(--ts-muted);
+  box-shadow: 0 6px 14px rgba(0,0,0,.03);
+}
+
+.bk-step.is-active{
+  border-color: rgba(255,136,0,.55);
+  color: #111;
+  box-shadow: 0 10px 22px rgba(255,136,0,.10);
+}
+
+/* ===== checkbox row ===== */
+.bk-check{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-weight: 800;
+  color: #111;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.bk-check input{ transform: translateY(2px); }
+
+/* ===== split panels ===== */
+.bk-split{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 860px){
+  .bk-split{ grid-template-columns: 1fr; }
+}
+
+.bk-panel{
+  border: 1px solid var(--ts-border);
+  border-radius: 18px;
+  padding: 14px;
+  background: #fff;
+  display: grid;
+  gap: 10px;
+}
+
+.bk-mini{
+  font-size: 13px;
+  color: var(--ts-muted);
+  font-weight: 800;
+}
+
+/* ===== summary ===== */
+.bk-summary{
+  border: 1px solid var(--ts-border);
+  border-radius: 20px;
+  padding: 14px;
+  background: #fff;
+  display: grid;
+  gap: 12px;
+}
+
+.bk-sum-title{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.bk-sum-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 860px){
+  .bk-sum-grid{ grid-template-columns: 1fr; }
+}
+
+.bk-sum-item{
+  border: 1px dashed rgba(0,0,0,.10);
+  border-radius: 16px;
+  padding: 10px 12px;
+}
+
+.bk-sum-k{
+  font-size: 12px;
+  color: var(--ts-muted);
+  font-weight: 800;
+}
+
+.bk-sum-v{
+  font-size: 14px;
+  font-weight: 900;
+  color: #111;
+  margin-top: 2px;
+}
+
+.bk-sum-daylist{
+  display: grid;
+  gap: 6px;
+}
+
+.bk-sum-day{
+  font-size: 13px;
+  font-weight: 800;
+  color: #111;
+}
+
+/* ===== actions row ===== */
+.bk-actions-row{
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 2px;
+}
+
+.pick-wrap { margin-top: 14px; }
+.pick-head { margin-bottom: 10px; }
+.pick-title { margin: 0; font-size: 18px; font-weight: 800; }
+.pick-sub { color: var(--ts-muted); font-weight: 600; margin-top: 2px; }
+
+.pick-list { display: grid; gap: 14px; }
+
+.pick-card{
+  border: 2px solid rgba(255,128,0,.35);
+  border-radius: 24px;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 220px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  background: #fff;
+  box-shadow: 0 12px 26px rgba(0,0,0,.06);
+  cursor: pointer;
+}
+
+.pick-card.is-active{
+  border-color: var(--ts-orange);
+  box-shadow: 0 16px 34px rgba(255,128,0,.18);
+}
+
+.pick-photos{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pick-photo{
+  height: 96px;
+  border: 2px solid rgba(0,0,0,.75);
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  background: #fff;
+}
+
+.pick-info{ padding: 6px 4px; }
+.pick-bullets{ margin: 0; padding-left: 18px; font-weight: 800; font-size: 16px; line-height: 1.5; }
+.pick-bullets li{ margin: 4px 0; }
+
+.pick-more{
+  border: none;
+  background: transparent;
+  color: var(--ts-orange);
+  font-weight: 900;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 14px;
+}
+.pick-more:hover{ background: rgba(255,128,0,.10); }
+
+@media (max-width: 860px){
+  .pick-card{ grid-template-columns: 1fr; }
+  .pick-photos{ max-width: 360px; }
+  .pick-more{ justify-self: end; }
+}
+
+/* =========================
+   StepOneway / Stops UI
+   (append at bottom)
+   ========================= */
+
+/* ให้หัวแผนการเดินทางดูแน่นขึ้นเหมือนรูป */
+.bk-days-head{
+  align-items: flex-start;
+}
+
+/* ชุดแท็บเที่ยวเดียว/ไป-กลับ ให้เหมือน pill */
+.bk-options{
+  gap: 8px;
+}
+
+.bk-option{
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 13px;
+  box-shadow: none;
+}
+
+/* ปุ่ม disabled ยังต้องดูเป็นแท็บ ไม่จางเกิน */
+.bk-option:disabled{
+  opacity: 1;
+  cursor: default;
+}
+
+.bk-option:not(.is-active):disabled{
+  background: #fff;
+  color: var(--ts-muted);
+  border-color: rgba(0,0,0,.10);
+}
+
+/* การ์ด day ให้เหมือนกล่องในรูป (โค้ง+เงานิด ๆ) */
+.bk-daycard{
+  border-radius: 22px;
+  padding: 16px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.04);
+}
+
+/* หัววันที่ + ปุ่มลบ */
+.bk-daytitle{
+  margin-bottom: 14px;
+}
+
+/* =========================
+   Stops section
+   ========================= */
+
+.bk-stops{
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(0,0,0,.10);
+  display: grid;
+  gap: 10px;
+}
+
+.bk-stops-head{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.bk-stops-head b{
+  font-size: 14px;
+  font-weight: 900;
+  color: #111;
+}
+
+/* ปุ่ม + เพิ่มจุดแวะ (ขวาบนแบบในรูป) */
+.bk-addstop{
+  border: 0;
+  background: #fff;
+  color: var(--ts-orange);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0,0,0,.04);
+  border: 1px solid rgba(255,136,0,.35);
+  transition: transform .08s ease, background .18s ease, border-color .18s ease;
+  white-space: nowrap;
+}
+
+.bk-addstop:hover{
+  background: rgba(255,136,0,.08);
+  border-color: rgba(255,136,0,.55);
+  transform: translateY(-1px);
+}
+
+.bk-addstop:active{
+  transform: translateY(0);
+}
+
+/* แถวจุดแวะ: ให้ 2 ช่อง + ปุ่มลบเล็กด้านขวา */
+.bk-stops .bk-grid{
+  grid-template-columns: 1fr 1fr auto;
+  align-items: end;
+}
+
+@media (max-width: 720px){
+  .bk-stops .bk-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ปุ่มลบจุดแวะ */
+.bk-remove-stop{
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(225,29,72,.22);
+  background: rgba(225,29,72,.08);
+  color: #be123c;
+  font-weight: 900;
+  padding: 0 12px;
+  cursor: pointer;
+  transition: background .18s ease, transform .08s ease;
+}
+
+.bk-remove-stop:hover{
+  background: rgba(225,29,72,.12);
+  transform: translateY(-1px);
+}
+
+.bk-remove-stop:active{
+  transform: translateY(0);
+}
+
+/* หมายเหตุให้ดูเป็น section ท้ายการ์ดแบบในรูป */
+.bk-daycard .ts-input:last-child,
+.bk-daycard .Input:last-child{
+  margin-top: 6px;
+}
+
+/* ==============================
+   Step 3: Coordinator (Polish UI)
+   append to bottom of BookingPage.css
+   ============================== */
+
+.bk-section{
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,.08);
+  background: #fff;
+}
+
+.bk-label{
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.bk-grid{
+  gap: 14px;
+}
+
+.bk-check{
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255,136,0,.06);
+  border: 1px solid rgba(255,136,0,.20);
+}
+
+.bk-check input{
+  margin-top: 3px;
+}
+
+.bk-split{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+@media (max-width: 900px){
+  .bk-split{ grid-template-columns: 1fr; }
+}
+
+.bk-panel{
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 18px;
+  background: #fff;
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.bk-panel .bk-hint{
+  margin: 0;
+  color: var(--ts-muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+/* หัวข้อรายชื่อ + ปุ่มเพิ่ม ให้เหมือนใน step routes */
+.bk-days-head{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.bk-days-head h2{
+  margin: 0;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.bk-addday{
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 900;
+}
+
+/* card ผู้ร่วมเดินทาง */
+.bk-daycard{
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 18px;
+  background: #fff;
+  padding: 14px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.04);
+}
+
+.bk-daytitle{
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  margin-bottom: 10px;
+}
+
+.bk-remove{
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 900;
+  background: rgba(225,29,72,.08);
+  border: 1px solid rgba(225,29,72,.22);
+  color: #be123c;
+}

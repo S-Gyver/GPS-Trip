@@ -1,0 +1,5 @@
+.hero{
+  border: 1px dashed var(--ts-border);
+  padding: 18px;
+  border-radius: var(--ts-radius);
+}

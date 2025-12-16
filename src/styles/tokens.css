@@ -1,0 +1,9 @@
+:root{
+  --ts-orange:#ff7a00;
+  --ts-yellow:#ffd400;
+  --ts-text:#1d1d1f;
+  --ts-muted:rgba(0,0,0,.6);
+  --ts-border:rgba(0,0,0,.1);
+  --ts-radius:16px;
+  --ts-max:1100px;
+}
