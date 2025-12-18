@@ -1,9 +1,43 @@
+// src/pages/auth/useAuthForm.js
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { loginUser, registerUser, saveSession } from '../../services/auth.api'
+import { saveSession } from '../../services/auth.api' // ใช้เก็บ session
 
 const normalizeRole = (role) => (role === 'driver' ? 'driver' : 'user')
 const redirectByRole = (role) => (role === 'driver' ? '/driver/jobs' : '/booking')
+
+// ตั้ง base URL ไป AppServ (กำหนดใน .env ได้)
+const API_BASE =
+  (import.meta?.env?.VITE_API_BASE || 'http://localhost/tripsync_api').replace(/\/$/, '')
+
+// helper ยิง API แบบ JSON
+async function postJson(path, payload) {
+  const url = `${API_BASE}/${String(path).replace(/^\//, '')}`
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload || {}),
+  })
+
+  const data = await res.json().catch(() => ({}))
+
+  if (!res.ok) {
+    const msg =
+      data?.message ||
+      data?.error ||
+      (typeof data === 'string' ? data : '') ||
+      `Request failed (${res.status})`
+    throw new Error(msg)
+  }
+
+  return data
+}
+
+// ✅ Google auth (Login/Register endpoint เดียว)
+async function googleAuth({ idToken, role }) {
+  return postJson('google_auth.php', { idToken, role })
+}
 
 /* =========================
    LOGIN LOGIC
@@ -16,31 +50,34 @@ export function useLoginLogic(options = {}) {
   const navigate = useNavigate()
 
   const submit = async (values) => {
+    if (loading) return
     try {
       setError('')
       setLoading(true)
 
       const role = normalizeRole(values?.role)
+      const email = (values?.email || '').trim().toLowerCase()
+      const password = values?.password || ''
 
-      // ✅ ส่ง role เข้า mock api ด้วย
-      const session = await loginUser({ ...values, role })
+      // ✅ FIX: Login ต้องยิง login.php (ไม่ใช่ register.php)
+      const session = await postJson('login.php', { email, password, role })
 
       saveSession({
         user: {
-          name: session?.user?.name || null,
-          email: session?.user?.email || values.email,
+          name: session?.user?.name || session?.user?.username || null,
+          email: session?.user?.email || email,
           role: session?.user?.role || role,
+          phone: session?.user?.phone || null,
+          id: session?.user?.id || null,
         },
         token: session?.token || null,
       })
 
-      // ✅ ถ้ามี onSuccess ให้ใช้มัน (เช่น กลับไปหน้าเดิมจาก location.state.from)
       if (typeof onSuccess === 'function') {
         onSuccess({ role, session })
         return
       }
 
-      // ✅ fallback เดิม: ไปตาม role
       navigate(redirectByRole(role), { replace: true })
     } catch (e) {
       setError(e?.message || 'เข้าสู่ระบบไม่สำเร็จ')
@@ -49,17 +86,38 @@ export function useLoginLogic(options = {}) {
     }
   }
 
-  const handleGoogleLogin = async (opts = {}) => {
+  // ✅ Google login (ได้ idToken จากปุ่ม GIS แล้วส่งมาที่นี่)
+  const handleGoogleLogin = async ({ idToken, role = 'user' } = {}) => {
+    if (!idToken) {
+      setError('ไม่พบ Google token')
+      return
+    }
+    if (loading) return
     try {
       setError('')
       setLoading(true)
 
-      const role = normalizeRole(opts?.role)
-      console.log('Google Login clicked. role =', role)
+      const normalizedRole = normalizeRole(role)
+      const session = await googleAuth({ idToken, role: normalizedRole })
 
-      alert('ฟีเจอร์ Google Login กำลังพัฒนา')
+      saveSession({
+        user: {
+          name: session?.user?.name || session?.user?.username || null,
+          email: session?.user?.email || null,
+          role: session?.user?.role || normalizedRole,
+          id: session?.user?.id || null,
+        },
+        token: session?.token || null,
+      })
+
+      if (typeof onSuccess === 'function') {
+        onSuccess({ role: normalizedRole, session })
+        return
+      }
+
+      navigate(redirectByRole(normalizedRole), { replace: true })
     } catch (e) {
-      setError('ไม่สามารถเข้าสู่ระบบด้วย Google ได้')
+      setError(e?.message || 'Google Login ไม่สำเร็จ')
     } finally {
       setLoading(false)
     }
@@ -80,6 +138,7 @@ export function useRegisterLogic(options = {}) {
   const navigate = useNavigate()
 
   const submit = async (values) => {
+    if (loading) return
     try {
       setError('')
       setSuccess('')
@@ -87,27 +146,35 @@ export function useRegisterLogic(options = {}) {
 
       const role = normalizeRole(values?.role)
 
-      // ✅ ส่ง role เข้า mock api
-      const session = await registerUser({ ...values, role })
+      // ✅ FIX: ระบบนี้ใช้ username อย่างเดียว (ไม่ต้อง first/last)
+      const username = (values?.username || values?.name || '').trim()
+      const email = (values?.email || '').trim().toLowerCase()
+      const phone = (values?.phone || '').trim()
+      const password = values?.password || ''
 
+      const payload = { role, username, email, phone, password }
+
+      // ✅ ยิงไป register.php
+      const session = await postJson('register.php', payload)
+
+      // บาง backend อาจไม่ส่ง session.user กลับมา → กันเหนียว
       saveSession({
         user: {
-          name: session?.user?.name || values.name,
-          email: session?.user?.email || values.email,
+          name: session?.user?.name || session?.user?.username || username || null,
+          email: session?.user?.email || email,
           role: session?.user?.role || role,
+          id: session?.user?.id || null,
         },
         token: session?.token || null,
       })
 
       setSuccess('สมัครสมาชิกสำเร็จ! กำลังพาไปต่อ...')
 
-      // ✅ ถ้ามี onSuccess ให้ใช้มันก่อน
       if (typeof onSuccess === 'function') {
         setTimeout(() => onSuccess({ role, session }), 400)
         return
       }
 
-      // ✅ fallback เดิม: ไปตาม role
       setTimeout(() => navigate(redirectByRole(role), { replace: true }), 700)
     } catch (e) {
       setError(e?.message || 'สมัครสมาชิกไม่สำเร็จ')
@@ -116,17 +183,41 @@ export function useRegisterLogic(options = {}) {
     }
   }
 
-  const handleGoogleLogin = async (opts = {}) => {
+  // ✅ Google register = endpoint เดียวกับ login (ถ้าไม่มี user จะสร้างให้)
+  const handleGoogleLogin = async ({ idToken, role = 'user' } = {}) => {
+    if (!idToken) {
+      setError('ไม่พบ Google token')
+      return
+    }
+    if (loading) return
     try {
       setError('')
+      setSuccess('')
       setLoading(true)
 
-      const role = normalizeRole(opts?.role)
-      console.log('Google Login clicked (Register). role =', role)
+      const normalizedRole = normalizeRole(role)
+      const session = await googleAuth({ idToken, role: normalizedRole })
 
-      alert('ฟีเจอร์ Google Login กำลังพัฒนา')
+      saveSession({
+        user: {
+          name: session?.user?.name || session?.user?.username || null,
+          email: session?.user?.email || null,
+          role: session?.user?.role || normalizedRole,
+          id: session?.user?.id || null,
+        },
+        token: session?.token || null,
+      })
+
+      setSuccess('สมัคร/เข้าสู่ระบบด้วย Google สำเร็จ! กำลังพาไปต่อ...')
+
+      if (typeof onSuccess === 'function') {
+        setTimeout(() => onSuccess({ role: normalizedRole, session }), 400)
+        return
+      }
+
+      setTimeout(() => navigate(redirectByRole(normalizedRole), { replace: true }), 700)
     } catch (e) {
-      setError('ไม่สามารถเข้าสู่ระบบด้วย Google ได้')
+      setError(e?.message || 'Google สมัคร/เข้าสู่ระบบ ไม่สำเร็จ')
     } finally {
       setLoading(false)
     }

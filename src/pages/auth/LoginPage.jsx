@@ -3,20 +3,27 @@ import Input from '../../components/ui/Input/Input'
 import Button from '../../components/ui/Button/Button'
 import './LoginPage.css'
 
+import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useLoginLogic } from './useAuthForm'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+const redirectByRole = (role) => (role === 'driver' ? '/driver/jobs' : '/booking')
 
 export default function LoginPage() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // 🔸 หน้าที่ควรกลับไปหลัง login
-  const from = location.state?.from || '/booking'
+  
+  const fromState = location.state?.from
+  const from =
+    typeof fromState === 'string'
+      ? fromState
+      : fromState?.pathname
+        ? fromState.pathname
+        : null
 
-  // เดา role จาก path: /driver/login = driver, อื่นๆ = user
   const isDriver = location.pathname.startsWith('/driver')
   const role = isDriver ? 'driver' : 'user'
 
@@ -30,19 +37,72 @@ export default function LoginPage() {
   })
 
   const { loading, error, submit, handleGoogleLogin } = useLoginLogic({
-    onSuccess: () => {
-      navigate(from, { replace: true })
+    onSuccess: ({ role }) => {
+      if (from) {
+        navigate(from, { replace: true })
+        return
+      }
+      navigate(redirectByRole(role), { replace: true })
     },
   })
 
   const onSubmit = async (data) => {
     if (loading) return
-    const payload = { ...data, email: (data.email || '').trim().toLowerCase() }
-    return submit({ ...payload, role })
+    return submit({
+      email: (data.email || '').trim().toLowerCase(),
+      password: data.password || '',
+      role,
+    })
   }
 
-  const goUser = () => navigate('/login')
-  const goDriver = () => navigate('/driver/login')
+  const goUser = () => navigate('/login', { replace: true })
+  const goDriver = () => navigate('/driver/login', { replace: true })
+
+  // =========================
+  // ✅ Google Identity Services Button
+  // =========================
+  const googleBtnRef = useRef(null)
+  const gsiRenderedRef = useRef(false)
+
+  useEffect(() => {
+  // ✅ ทำเฉพาะหน้า login (กันเคสถูก re-render หลัง navigate)
+  if (location.pathname !== '/login' && location.pathname !== '/driver/login') return
+
+  if (gsiRenderedRef.current) return
+  if (!googleBtnRef.current) return
+  if (!window.google?.accounts?.id) return
+
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+  if (!clientId) return
+
+  googleBtnRef.current.innerHTML = ''
+  gsiRenderedRef.current = true
+
+  window.google.accounts.id.initialize({
+    client_id: clientId,
+    callback: (res) => {
+      const idToken = res?.credential
+      if (!idToken) return
+      handleGoogleLogin({ idToken, role })
+    },
+  })
+
+  window.google.accounts.id.renderButton(googleBtnRef.current, {
+    theme: 'outline',
+    size: 'large',
+    text: 'continue_with',
+    shape: 'pill',
+    width: 360,
+  })
+
+  // ✅ cleanup สำคัญมาก
+  return () => {
+    try {
+      window.google.accounts.id.cancel()
+    } catch {}
+  }
+}, [location.pathname, handleGoogleLogin, role])
+
 
   return (
     <PageContainer>
@@ -62,6 +122,7 @@ export default function LoginPage() {
           >
             👤 ผู้ใช้
           </button>
+
           <button
             type="button"
             className={`role-pill ${isDriver ? 'active' : ''}`}
@@ -85,7 +146,7 @@ export default function LoginPage() {
             inputMode="email"
             {...register('email', {
               required: 'กรุณากรอกอีเมล',
-              validate: (v) => v.trim().length > 0 || 'กรุณากรอกอีเมล',
+              validate: (v) => (v || '').trim().length > 0 || 'กรุณากรอกอีเมล',
               pattern: { value: EMAIL_PATTERN, message: 'รูปแบบอีเมลไม่ถูกต้อง' },
             })}
           />
@@ -110,19 +171,10 @@ export default function LoginPage() {
             <span>หรือ</span>
           </div>
 
-          <button
-            type="button"
-            className="google-login-btn"
-            onClick={() => handleGoogleLogin({ role })}
-            disabled={loading}
-          >
-            <img
-              src="https://www.svgrepo.com/show/475656/google-color.svg"
-              alt="Google"
-              className="google-icon"
-            />
-            <span>เข้าสู่ระบบด้วย Google</span>
-          </button>
+          {/* ✅ ปุ่ม Google จริง */}
+          <div style={{ display: 'grid', justifyContent: 'center' }}>
+            <div ref={googleBtnRef} />
+          </div>
 
           <div className="auth-footer">
             ยังไม่มีบัญชี?{' '}
