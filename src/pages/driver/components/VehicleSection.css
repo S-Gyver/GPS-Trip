@@ -1,0 +1,69 @@
+/* src/pages/driver/components/VehicleSection.css */
+
+.vs-wrap{
+  display:grid;
+  gap: 12px;
+}
+
+.vs-title{
+  font-size: 15px;
+  font-weight: 950;
+  color:#0f172a;
+  margin: 2px 0 6px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.vs-title::before{
+  content:"";
+  width:10px; height:10px;
+  border-radius:999px;
+  background: linear-gradient(135deg,#fbbf24,#f97316);
+}
+
+.vs-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.vs-row3{
+  grid-column: 1 / -1;
+  display:grid;
+  grid-template-columns: 1.2fr .8fr 1fr;
+  gap: 12px;
+}
+
+.vs-field{ display:grid; gap:8px; }
+
+.vs-label{
+  font-size: 12px;
+  font-weight: 950;
+  color:#0f172a;
+}
+
+.vs-input{
+  width:100%;
+  height: 46px;
+  border-radius: 16px;
+  border: 1px solid rgba(15,23,42,.10);
+  padding: 0 12px;
+  outline:none;
+  background:#fff;
+  font-weight: 700;
+  font-size: 14px;
+  color:#0f172a;
+}
+
+.vs-input:focus{
+  border-color: rgba(249,115,22,.55);
+  box-shadow: 0 0 0 4px rgba(249,115,22,.12);
+}
+
+@media (max-width: 900px){
+  .vs-row3{ grid-template-columns: 1fr; }
+}
+@media (max-width: 720px){
+  .vs-grid{ grid-template-columns: 1fr; }
+}
+

@@ -1,4 +1,5 @@
-import PageContainer from "../../components/layout/PageContainer/PageContainer";
+// src/pages/driver/DriverJobsPage.jsx
+import PageContainer from '../../components/layout/PageContainer/PageContainer'
 
 export default function DriverJobsPage() {
   return (
@@ -6,5 +7,5 @@ export default function DriverJobsPage() {
       <h1>Driver Jobs Page</h1>
       <p>ยังไม่ทำจริง</p>
     </PageContainer>
-  );
+  )
 }

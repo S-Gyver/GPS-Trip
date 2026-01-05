@@ -1,0 +1,81 @@
+/* src/pages/driver/components/DriverAvatarCard.css */
+
+.dr-top{
+  background: #fff7ed;
+  border: 1px solid rgba(249,115,22,.18);
+  border-radius: 20px;
+  padding: 18px;
+  display:flex;
+  align-items:center;
+  gap: 16px;
+  box-shadow: 0 18px 40px rgba(15,23,42,.06);
+  margin-bottom: 16px;
+}
+
+.dr-avatarCard{
+  width: 132px;
+  height: 132px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #fb923c, #f97316);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  box-shadow: 0 14px 28px rgba(249,115,22,.25);
+  flex: 0 0 auto;
+}
+
+.dr-avatarImg{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dr-avatarFallback{
+  width: 100%;
+  height: 100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.dr-avatarIcon{
+  font-size: 44px;
+  filter: drop-shadow(0 8px 14px rgba(0,0,0,.18));
+}
+
+.dr-topActions{
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dr-uploadBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #f97316;
+  color:#fff;
+  font-weight: 900;
+  font-size: 13px;
+  cursor:pointer;
+  user-select:none;
+  box-shadow: 0 12px 26px rgba(249,115,22,.25);
+  width: fit-content;
+}
+
+.dr-uploadBtn:hover{
+  filter: brightness(.98);
+}
+
+.dr-fileHidden{
+  display:none;
+}
+
+.dr-uploadHint{
+  font-size: 12px;
+  font-weight: 700;
+  color:#475569;
+}

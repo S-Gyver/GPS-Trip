@@ -1,3 +1,7 @@
+/* =========================
+   TripSync Navbar (Improved)
+========================= */
+
 .ts-nav{
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -9,49 +13,155 @@
 .ts-nav__inner{
   max-width: var(--ts-max);
   margin: 0 auto;
-  padding: 14px 16px;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
 }
 
+/* Brand */
 .ts-nav__brand{
   text-decoration: none;
   font-weight: 900;
   color: var(--ts-text);
+  letter-spacing: .2px;
 }
 
+/* Menu */
 .ts-nav__menu{
   display: flex;
   gap: 14px;
   align-items: center;
 }
 
+/* Link (เหมือนกันทั้ง <NavLink> และปุ่ม dropdown) */
 .ts-nav__link{
   text-decoration: none;
   color: var(--ts-text);
   opacity: .9;
+  font-weight: 800;
+  padding: 8px 10px;
+  border-radius: 12px;
+  transition: background .15s ease, opacity .15s ease;
 }
 
+.ts-nav__link:hover{
+  opacity: 1;
+  background: rgba(0,0,0,.04);
+}
+
+/* active ของ react-router (NavLink) */
+.ts-nav__link.active{
+  opacity: 1;
+  background: rgba(255, 122, 0, .12);
+  color: #111;
+}
+
+/* Button (เข้าสู่ระบบ / ชื่อผู้ใช้) */
 .ts-nav__btn{
   text-decoration: none;
   background: var(--ts-orange);
   color: #fff;
   padding: 10px 14px;
   border-radius: 14px;
-  font-weight: 800;
+  font-weight: 900;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 24px rgba(255,122,0,.25);
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
 }
 
-.ts-user{ position: relative; display: inline-block; }
+.ts-nav__btn:hover{
+  filter: brightness(1.02);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(255,122,0,.28);
+}
 
-.ts-user__btn{ display:flex; align-items:center; gap:8px; }
+.ts-nav__btn:active{
+  transform: translateY(0);
+}
+
+/* =========================
+   Dropdown (About / Services)
+========================= */
+
+.ts-dd{
+  position: relative;
+  display: inline-block;
+}
+
+.ts-dd__btn{
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.ts-dd__chev{
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 12px;
+  opacity: .7;
+}
+
+.ts-dd__menu{
+  position: absolute;
+  left: 0;
+  top: calc(100% + 10px);
+  width: 240px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0,0,0,.12);
+  z-index: 50;
+}
+
+.ts-dd__item{
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: var(--ts-text);
+  font-weight: 800;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+
+.ts-dd__item:hover{
+  background: rgba(0,0,0,.04);
+}
+
+/* =========================
+   User Dropdown
+========================= */
+
+.ts-user{
+  position: relative;
+  display: inline-block;
+}
+
+.ts-user__btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.ts-user__chev{
+  opacity: .9;
+  font-size: 12px;
+}
 
 .ts-user__menu{
   position: absolute;
   right: 0;
   top: calc(100% + 10px);
-  width: 180px;
+  width: 210px;
   background: #fff;
   border: 1px solid rgba(0,0,0,.08);
   border-radius: 14px;
@@ -67,11 +177,20 @@
   border: 0;
   text-align: left;
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 900;
+  color: var(--ts-text);
+  text-decoration: none;
+  display: block;
 }
 
 .ts-user__item:hover{
   background: rgba(0,0,0,.04);
+}
+
+.ts-user__sep{
+  height: 1px;
+  background: rgba(0,0,0,.08);
+  margin: 6px 0;
 }
 
 .ts-user__item.danger{
@@ -80,4 +199,141 @@
 
 .ts-user__item.danger:hover{
   background: rgba(190,18,60,.08);
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 860px){
+  .ts-nav__inner{
+    padding: 10px 12px;
+  }
+  .ts-nav__menu{
+    gap: 8px;
+  }
+  .ts-dd__menu{
+    width: 220px;
+  }
+}
+
+@media (max-width: 640px){
+  /* ให้เมนูแน่นๆ + scroll แนวนอนถ้าจอแคบ */
+  .ts-nav__menu{
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 2px;
+  }
+  .ts-nav__menu::-webkit-scrollbar{
+    height: 6px;
+  }
+  .ts-nav__menu::-webkit-scrollbar-thumb{
+    background: rgba(0,0,0,.12);
+    border-radius: 999px;
+  }
+}
+
+/* ===== Dropdown look & feel upgrade ===== */
+
+/* กล่อง dropdown */
+.ts-dd__menu, .ts-user__menu{
+  padding: 8px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,122,0,.18);
+  box-shadow: 0 18px 50px rgba(17,24,39,.12);
+  overflow: visible; /* เผื่อ arrow */
+}
+
+/* หัวลูกศรเล็กๆ */
+.ts-dd__menu::before,
+.ts-user__menu::before{
+  content:"";
+  position:absolute;
+  top:-7px;
+  width: 14px;
+  height: 14px;
+  background:#fff;
+  border-left: 1px solid rgba(255,122,0,.18);
+  border-top: 1px solid rgba(255,122,0,.18);
+  transform: rotate(45deg);
+}
+
+/* About/Services dropdown (ชิดซ้าย) */
+.ts-dd__menu::before{ left: 22px; }
+
+/* User dropdown (ชิดขวา) */
+.ts-user__menu::before{ right: 22px; }
+
+/* item แต่ละอัน */
+.ts-dd__item, .ts-user__item{
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* bullet สีๆ (จุดกลม) */
+.ts-dd__item::before,
+.ts-user__item::before{
+  content:"";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--ts-orange);
+  box-shadow: 0 0 0 4px rgba(255,122,0,.14);
+}
+
+/* hover แบบมีสี */
+.ts-dd__item:hover,
+.ts-user__item:hover{
+  background: rgba(255,122,0,.10);
+}
+
+/* active ของ NavLink ใน dropdown (ถ้าใช้ NavLink เป็น item) */
+.ts-dd__item.active,
+.ts-user__item.active{
+  background: rgba(255,122,0,.14);
+}
+
+/* danger (ออกจากระบบ) ให้จุดเป็นสีแดง */
+.ts-user__item.danger::before{
+  background: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239,68,68,.12);
+}
+
+/* ทำปุ่ม dropdown (เกี่ยวกับเรา/บริการของเรา) ให้ดูเหมือน pill ตอนเปิด */
+.ts-dd .ts-nav__link[aria-expanded="true"],
+.ts-dd .ts-dd__btn[aria-expanded="true"]{
+  background: rgba(255,122,0,.12);
+  opacity: 1;
+}
+
+.ts-role-badge{
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--ts-border);
+  background: #fff;
+}
+
+.ts-role-badge.user{
+  background: rgba(255, 138, 0, 0.12);
+  border-color: rgba(255, 138, 0, 0.35);
+  color: #b45309;
+}
+
+.ts-role-badge.driver{
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.35);
+  color: #1d4ed8;
+}
+
+.ts-role-badge.admin{
+  background: rgba(244, 63, 94, 0.12);
+  border-color: rgba(244, 63, 94, 0.35);
+  color: #be123c;
 }

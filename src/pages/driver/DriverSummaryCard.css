@@ -1,0 +1,138 @@
+/* src/pages/driver/DriverSummaryCard.css */
+
+/* --- กรอบการ์ดหลัก --- */
+.ds-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0; /* สีเส้นขอบจางๆ */
+  border-radius: 16px;       /* มุมโค้ง */
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* เงาบางๆ ให้ดูลอยขึ้น */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* --- ส่วนหัว (Title + Status Badge) --- */
+.ds-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9; /* เส้นขีดคั่นหัวข้อ */
+}
+
+.ds-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* --- Grid แสดงข้อมูลทั่วไป (2 คอลัมน์) --- */
+.ds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive Grid */
+  gap: 16px 24px; /* gap บนล่าง 16, ซ้ายขวา 24 */
+}
+
+.ds-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ds-k { /* Label (หัวข้อ) */
+  font-size: 12px;
+  color: #64748b; /* สีเทากลาง */
+  font-weight: 600;
+  text-transform: uppercase; /* ตัวพิมพ์ใหญ่ (ถ้าเป็นอังกฤษ) หรือดูทางการขึ้น */
+  letter-spacing: 0.5px;
+}
+
+.ds-v { /* Value (ค่าข้อมูล) */
+  font-size: 15px;
+  color: #0f172a; /* สีเกือบดำ */
+  font-weight: 600;
+  min-height: 22px; /* กันเบี้ยวถ้าข้อมูลว่าง */
+}
+
+/* --- ส่วน Badge สถานะ (รวมจากที่คุณเขียนมา) --- */
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: #94a3b8;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.status-approved { background: #22c55e; } /* เขียว */
+.status-pending { background: #f59e0b; }  /* ส้ม */
+.status-rejected { background: #ef4444; } /* แดง */
+.status-suspended { background: #64748b; } /* เทา */
+
+/* --- ส่วนสรุปเอกสาร (กรอบสีเทาด้านล่าง) --- */
+.ds-docWrap {
+  margin-top: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.ds-docTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 12px;
+}
+
+.ds-docGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 คอลัมน์สำหรับเอกสาร */
+  gap: 12px;
+}
+
+/* มือถือให้เหลือ 1 คอลัมน์ */
+@media (max-width: 640px) {
+  .ds-docGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ds-docItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #94a3b8; /* สีจางตอนยังไม่ส่ง */
+  transition: all 0.2s;
+}
+
+.ds-docItem.is-uploaded {
+  color: #334155; /* สีเข้มขึ้นเมื่อส่งแล้ว */
+  font-weight: 600;
+}
+
+/* ตัววงกลมติ๊กถูก */
+.ds-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e2e8f0; /* สีพื้นเทา */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: transparent; /* ซ่อนเครื่องหมายถูกไว้ก่อน */
+  flex-shrink: 0;
+}
+
+.ds-check.is-ok {
+  background: #22c55e; /* สีเขียว */
+  color: #fff;         /* โชว์เครื่องหมายถูกสีขาว */
+  box-shadow: 0 2px 4px rgba(34, 197, 94, 0.2);
+}

@@ -1,0 +1,39 @@
+/* src/pages/driver/DriverRegisterForm.css */
+
+.drf-form{
+  display: grid;
+  gap: 16px;
+}
+
+.drf-card{
+  background:#fff;
+  border:1px solid rgba(15,23,42,.10);
+  border-radius: 26px;
+  padding: 20px;
+  box-shadow: 0 22px 46px rgba(0,0,0,.08);
+  display:grid;
+  gap: 14px;
+}
+
+.drf-divider{
+  border:0;
+  border-top: 1px solid rgba(15,23,42,.08);
+  margin: 8px 0;
+}
+
+.drf-secTitle{
+  font-size: 15px;
+  font-weight: 950;
+  color:#0f172a;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.drf-secTitle::before{
+  content:"";
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  background: linear-gradient(135deg,#fbbf24,#f97316);
+}

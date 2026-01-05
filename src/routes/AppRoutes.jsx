@@ -13,7 +13,9 @@ import TripsHistoryPage from '../pages/user/trips/TripsHistoryPage'
 import AdminLoginPage from '../pages/admin/AdminLoginPage'
 import AdminDashboardPage from '../pages/admin/AdminDashboardPage'
 
-import DriverJobsPage from '../pages/driver/DriverJobsPage'
+import UserProfilePage from '../pages/user/profile/UserProfilePage'
+
+import DriverRegisterPage from '../pages/driver/DriverRegisterPage'
 
 export default function AppRoutes() {
   return (
@@ -23,53 +25,65 @@ export default function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
 
-      <Route path="/driver/login" element={<LoginPage />} />
-      <Route path="/driver/register" element={<RegisterPage />} />
-
+      {/* ===== Admin login ===== */}
       <Route path="/admin/login" element={<AdminLoginPage />} />
 
-      {/* ===== Booking (เปิดให้กรอกได้ ไม่บังคับ login) ===== */}
-      <Route path="/booking" element={<BookingPage />} />
+      {/* ===== Protected (login เท่านั้น) ===== */}
+      <Route
+        path="/booking"
+        element={
+          <ProtectedRoute>
+            <BookingPage />
+          </ProtectedRoute>
+        }
+      />
 
-      {/* ===== User (protected) ===== */}
       <Route
         path="/booking/status"
         element={
-          <ProtectedRoute allow={['user']}>
+          <ProtectedRoute>
             <BookingStatusPage />
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/trips"
         element={
-          <ProtectedRoute allow={['user']}>
+          <ProtectedRoute>
             <TripsHistoryPage />
           </ProtectedRoute>
         }
       />
 
-      {/* ===== Driver (protected) ===== */}
-      <Route
-        path="/driver/jobs"
-        element={
-          <ProtectedRoute allow={['driver']}>
-            <DriverJobsPage />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* ===== Admin ===== */}
       <Route
         path="/admin"
         element={
-          <ProtectedRoute allow={['admin']}>
+          <ProtectedRoute>
             <AdminDashboardPage />
           </ProtectedRoute>
         }
       />
 
-      {/* ===== Not found ===== */}
+      <Route
+        path="/driver/register"
+        element={
+          <ProtectedRoute>
+            <DriverRegisterPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <UserProfilePage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* ===== Not found (ต้องไว้ท้ายสุดเสมอ) ===== */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

@@ -1,0 +1,25 @@
+/* ===== DriverApplySection extras (ไม่ชนของเดิม) ===== */
+
+.da-loading{
+  font-weight: 800;
+  color: #64748b;
+}
+
+.da-error{
+  margin-top: 12px;
+  background: rgba(225, 29, 72, .08);
+  border: 1px solid rgba(225, 29, 72, .25);
+  color: #be123c;
+  font-weight: 800;
+}
+
+.da-actions{
+  margin-top: 14px;
+}
+
+/* ตอนโชว์ summary อยากให้ดูเนียน ไม่ทับ padding ซ้อน */
+.da-summaryWrap{
+  padding: 0;          /* ให้ DriverSummaryCard จัดการ padding เอง */
+  overflow: hidden;    /* มุมโค้งเนียน */
+  background: #fff;
+}

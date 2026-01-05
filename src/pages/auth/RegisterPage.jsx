@@ -4,209 +4,127 @@ import Input from '../../components/ui/Input/Input'
 import Button from '../../components/ui/Button/Button'
 import './RegisterPage.css'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import Swal from 'sweetalert2'
 import { useForm } from 'react-hook-form'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useRegisterLogic } from './useAuthForm'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+const USERNAME_PATTERN = /^[a-zA-Z0-9_]+$/
 
 export default function RegisterPage() {
   const navigate = useNavigate()
-  const location = useLocation()
-
-  // ✅ เดา role จาก path
-  const isDriver = location.pathname.startsWith('/driver')
-  const role = isDriver ? 'driver' : 'user'
-
-  // ✅ คุมการโชว์ server error ไม่ให้ “ค้าง”
-  const [showServerError, setShowServerError] = useState(false)
 
   const {
     register,
     handleSubmit,
+    formState: { errors, isSubmitting, isValid },
     watch,
-    formState: { errors, submitCount },
   } = useForm({
     mode: 'onBlur',
+    reValidateMode: 'onChange',
     defaultValues: {
-      name: '',
+      username: '',
       email: '',
       password: '',
       confirmPassword: '',
     },
   })
 
-  const { loading, error, success, submit, handleGoogleLogin } = useRegisterLogic()
-  const pwd = watch('password')
+  // ✅ ตัด Google ออก เหลือแค่ submit
+  const { loading, error, submit } = useRegisterLogic()
 
-  useEffect(() => {
-    if (error) setShowServerError(true)
-  }, [error])
+  const password = watch('password')
+  const busy = loading || isSubmitting
 
-  const hasValidationError = useMemo(() => Object.keys(errors || {}).length > 0, [errors])
-  const hideServerErrorOnEdit = () => setShowServerError(false)
-
-  // ✅ สมัครด้วย email/password → ส่ง username อย่างเดียว
   const onSubmit = async (data) => {
-    if (loading) return
+    if (busy) return
 
-    const payload = {
-      role,
-      username: (data.name || '').trim(),
+    const res = await submit({
+      username: (data.username || '').trim(),
       email: (data.email || '').trim().toLowerCase(),
       password: data.password,
-    }
+      confirmPassword: data.confirmPassword,
+    })
 
-    console.log('REGISTER payload =>', payload)
-    return submit(payload)
+    if (res) {
+      await Swal.fire({
+        icon: 'success',
+        title: 'สมัครสมาชิกสำเร็จ',
+        confirmButtonText: 'ตกลง',
+        confirmButtonColor: '#16a34a',
+      })
+
+      navigate('/booking', { replace: true })
+    }
   }
-
-  const goUser = () => navigate('/register')
-  const goDriver = () => navigate('/driver/register')
-
-  // =========================
-  // ✅ Google Identity Services Button
-  // =========================
-  const googleBtnRef = useRef(null)
-
-  useEffect(() => {
-    if (!window.google || !googleBtnRef.current) return
-
-    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
-    console.log('GOOGLE_CLIENT_ID (Register) =>', clientId)
-    if (!clientId) {
-      console.error('Missing VITE_GOOGLE_CLIENT_ID in .env')
-      return
-    }
-
-    window.google.accounts.id.initialize({
-      client_id: clientId,
-      callback: (res) => {
-        const idToken = res?.credential
-        if (!idToken) return
-        // ✅ ส่ง idToken เข้า hook ที่เราแก้ไว้แล้ว
-        handleGoogleLogin({ idToken, role })
-      },
-    })
-
-    window.google.accounts.id.renderButton(googleBtnRef.current, {
-      type: 'standard',
-      theme: 'outline',
-      size: 'large',
-      text: 'continue_with',
-      shape: 'pill',
-      width: 360,
-    })
-  }, [handleGoogleLogin, role])
 
   return (
     <PageContainer>
-      <div className="auth-card" aria-busy={loading}>
+      <div className="auth-card" aria-busy={busy}>
         <h1 className="auth-title">สมัครสมาชิก</h1>
-        <p className="auth-sub">
-          {isDriver ? 'สมัครสำหรับคนขับ TripSync' : 'สมัครสำหรับผู้ใช้งาน TripSync'}
-        </p>
+        <p className="auth-sub">สมัครเป็นผู้ใช้งาน TripSync</p>
 
-        <div className="role-switch" role="tablist" aria-label="เลือกประเภทการสมัคร">
-          <button
-            type="button"
-            className={`role-pill ${!isDriver ? 'active' : ''}`}
-            onClick={goUser}
-            disabled={loading}
-            aria-selected={!isDriver}
-          >
-            👤 ผู้ใช้
-          </button>
-          <button
-            type="button"
-            className={`role-pill ${isDriver ? 'active' : ''}`}
-            onClick={goDriver}
-            disabled={loading}
-            aria-selected={isDriver}
-          >
-            🚗 คนขับ
-          </button>
-        </div>
+        {error && <div className="auth-alert">{error}</div>}
 
-        {submitCount > 0 && hasValidationError && (
-          <div className="auth-alert">กรุณากรอกข้อมูลให้ครบ</div>
-        )}
-
-        {showServerError && error && !hasValidationError && (
-          <div className="auth-alert">{error}</div>
-        )}
-
-        {success && <div className="auth-success">{success}</div>}
-
-        <form className="auth-form" noValidate onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="auth-form" noValidate>
           <Input
-            label="ชื่อผู้ใช้งาน"
-            placeholder="เช่น Boy"
-            error={errors.name?.message}
-            {...register('name', {
-              required: 'กรุณากรอกชื่อ',
-              validate: (v) => v.trim().length > 0 || 'กรุณากรอกชื่อ',
-              onChange: hideServerErrorOnEdit,
+            label="ชื่อผู้ใช้"
+            placeholder="เช่น boy_123"
+            autoComplete="username"
+            {...register('username', {
+              required: 'กรุณากรอกชื่อผู้ใช้',
+              minLength: { value: 3, message: 'อย่างน้อย 3 ตัวอักษร' },
+              maxLength: { value: 20, message: 'ไม่เกิน 20 ตัวอักษร' },
+              pattern: { value: USERNAME_PATTERN, message: 'ใช้ได้เฉพาะ a-z, A-Z, 0-9 และ _' },
             })}
+            error={errors.username?.message}
           />
 
           <Input
             label="อีเมล"
-            type="email"
-            placeholder="you@email.com"
-            error={errors.email?.message}
+            placeholder="name@email.com"
+            autoComplete="email"
+            inputMode="email"
             {...register('email', {
               required: 'กรุณากรอกอีเมล',
               pattern: { value: EMAIL_PATTERN, message: 'รูปแบบอีเมลไม่ถูกต้อง' },
-              onChange: hideServerErrorOnEdit,
             })}
+            error={errors.email?.message}
           />
 
           <Input
             label="รหัสผ่าน"
             type="password"
-            placeholder="อย่างน้อย 6 ตัวอักษร"
-            error={errors.password?.message}
+            placeholder="อย่างน้อย 8 ตัวอักษร"
+            autoComplete="new-password"
             {...register('password', {
               required: 'กรุณากรอกรหัสผ่าน',
-              minLength: { value: 6, message: 'อย่างน้อย 6 ตัวอักษร' },
-              onChange: hideServerErrorOnEdit,
+              minLength: { value: 8, message: 'รหัสผ่านต้องอย่างน้อย 8 ตัวอักษร' },
             })}
+            error={errors.password?.message}
           />
 
           <Input
             label="ยืนยันรหัสผ่าน"
             type="password"
-            placeholder="กรอกซ้ำอีกครั้ง"
-            error={errors.confirmPassword?.message}
+            placeholder="พิมพ์รหัสผ่านเดิมอีกครั้ง"
+            autoComplete="new-password"
             {...register('confirmPassword', {
               required: 'กรุณายืนยันรหัสผ่าน',
-              validate: (v) => v === pwd || 'รหัสผ่านไม่ตรงกัน',
-              onChange: hideServerErrorOnEdit,
+              validate: (v) => v === password || 'รหัสผ่านไม่ตรงกัน',
             })}
+            error={errors.confirmPassword?.message}
           />
 
-          <Button type="submit" loading={loading}>
-            {loading ? 'กำลังสมัคร...' : 'สมัครสมาชิก'}
-          </Button>
-
-          <Button type="button" variant="ghost" disabled={loading} onClick={() => navigate(-1)}>
-            ย้อนกลับ
+          <Button type="submit" loading={busy} disabled={busy || !isValid}>
+            สมัครสมาชิก
           </Button>
         </form>
 
-        <div className="auth-divider">
-          <span>หรือ</span>
-        </div>
-
-        {/* ✅ ปุ่ม Google จริง */}
-        <div style={{ display: 'grid', justifyContent: 'center' }}>
-          <div ref={googleBtnRef} />
-        </div>
-
+        {/* ✅ ลบส่วนสมัครด้วย Google ออกแล้ว */}
         <div className="auth-footer">
-          มีบัญชีแล้ว? <Link to={isDriver ? '/driver/login' : '/login'}>เข้าสู่ระบบ</Link>
+          มีบัญชีแล้ว? <Link to="/login">เข้าสู่ระบบ</Link>
         </div>
       </div>
     </PageContainer>

@@ -1,0 +1,90 @@
+/* src/pages/driver/components/DocumentsSection.css */
+
+.dr-docBox{
+  background:#ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 16px;
+  display:grid;
+  gap: 12px;
+  box-shadow: 0 18px 40px rgba(15,23,42,.06);
+}
+
+.dr-docTitle{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 900;
+  color:#0f172a;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.dr-docTitle::after{
+  content:"ข้ามได้";
+  margin-left:auto;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background:#fff7ed;
+  color:#9a3412;
+  border: 1px solid rgba(249,115,22,.25);
+}
+
+/* src/pages/driver/components/DocumentsSection.css */
+
+/* กล่องครอบทั้ง section */
+.dr-docBox{
+  background:#ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 16px;
+  display:grid;
+  gap: 14px;
+  box-shadow: 0 18px 40px rgba(15,23,42,.06);
+}
+
+/* หัวข้อ */
+.dr-docTitle{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 900;
+  color:#0f172a;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+/* badge ข้ามได้ */
+.dr-docBadge{
+  margin-left:auto;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background:#fff7ed;
+  color:#9a3412;
+  border: 1px solid rgba(249,115,22,.25);
+}
+
+/* ✅ GRID 2 คอลัมน์ → 6 = 3 บรรทัด */
+.dr-docGrid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* มือถือ → 1 คอลัมน์ */
+@media (max-width: 820px){
+  .dr-docGrid{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* กัน card ล้น */
+.dr-docGrid > *{
+  min-width: 0;
+}

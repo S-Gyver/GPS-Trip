@@ -1,0 +1,90 @@
+/* src/pages/driver/DriverRegisterPage.css */
+
+.dr-page{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 22px 16px 64px;
+}
+
+.dr-title{
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 8px 0 18px;
+  color: #0f172a;
+}
+
+/* หัวข้อแต่ละ section */
+.dr-secTitle{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size: 15px;
+  font-weight: 900;
+  color:#0f172a;
+  margin: 18px 0 10px;
+}
+
+.dr-secTitle::before{
+  content:"";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #f97316;
+}
+
+/* layout: 2 คอลัมน์ */
+.dr-grid2{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 780px){
+  .dr-grid2{ grid-template-columns: 1fr; }
+}
+
+.dr-field{
+  min-width: 0;
+}
+
+.dr-label{
+  display:block;
+  font-size: 13px;
+  font-weight: 800;
+  color:#0f172a;
+  margin: 0 0 8px;
+}
+
+/* ทำให้ Input ของโปรเจกต์ (ts-input) ดูเข้ากับหน้า driver */
+.dr-field .ts-input{
+  width: 100%;
+}
+
+/* error */
+.dr-field.has-error .ts-input{
+  border-color:#ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239,68,68,.12) !important;
+}
+
+.dr-error{
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color:#ef4444;
+}
+
+.dr-inputLocked{
+  background:#f3f4f6 !important;
+  color:#6b7280 !important;
+  border-color:#e5e7eb !important;
+  cursor:not-allowed;
+}
+
+.dr-divider{
+  border:0;
+  height:1px;
+  background: #e5e7eb;
+  margin: 18px 0;
+}
