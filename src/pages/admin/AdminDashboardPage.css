@@ -1,130 +1,8 @@
 /* src/pages/admin/AdminDashboardPage.css */
 
-.ad-wrap{ max-width: 1000px; margin: 0 auto; padding-bottom: 40px; }
-
-.ad-header{
-  margin-bottom: 24px;
-}
-.ad-title{ margin:0 0 6px; font-size: 28px; color: #1e293b; }
-.ad-sub{ margin:0; color: #64748b; font-size: 14px; }
-
-/* === STATS CARDS === */
-.ad-stats{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.stat-card{
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-}
-
-.stat-label{ font-size: 13px; color: #64748b; font-weight: 600; }
-.stat-value{ font-size: 28px; font-weight: 800; color: #0f172a; }
-
-/* สีตามสถานะ */
-.stat-card.is-pending .stat-value { color: #f59e0b; }
-.stat-card.is-approved .stat-value { color: #10b981; }
-.stat-card.is-total .stat-value { color: #3b82f6; }
-
-/* === TOOLBAR (Search + Filter) === */
-.ad-toolbar{
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.ad-search{
-  flex: 1;
-  min-width: 200px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid #cbd5e1;
-  font-size: 14px;
-  outline: none;
-}
-.ad-search:focus{ border-color: #f97316; box-shadow: 0 0 0 3px rgba(249,115,22,0.1); }
-
-.ad-select{
-  padding: 10px 36px 10px 14px;
-  border-radius: 12px;
-  border: 1px solid #cbd5e1;
-  background: #fff;
-  font-size: 14px;
-  outline: none;
-  cursor: pointer;
-}
-
-.ad-refresh{
-  background: #fff;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  padding: 0 16px;
-  font-weight: 700;
-  cursor: pointer;
-  color: #475569;
-}
-.ad-refresh:hover{ background: #f8fafc; border-color: #94a3b8; }
-
-/* === LIST === */
-.ad-list{ display: grid; gap: 24px; }
-
-.ad-item-wrap{
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-}
-
-.ad-item-body{
-  padding: 20px;
-}
-
-/* Action Bar ด้านล่างการ์ด */
-.ad-actions-bar{
-  background: #f8fafc;
-  border-top: 1px solid #e2e8f0;
-  padding: 12px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.ad-status-label{ font-size: 13px; font-weight: 600; color: #64748b; }
-
-.ad-btn-group{ display: flex; gap: 10px; }
-
-.ad-btn{
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-approve{ background: #10b981; color: #fff; box-shadow: 0 4px 6px rgba(16,185,129,0.2); }
-.btn-approve:hover{ background: #059669; }
-
-.btn-reject{ background: #fff; border: 1px solid #ef4444; color: #ef4444; }
-.btn-reject:hover{ background: #fef2f2; }
-
-.btn-suspend{ background: #64748b; color: #fff; }
-
-/* src/pages/admin/AdminDashboardPage.css */
-
-/* Layout หลัก: แบ่งซ้าย (Sidebar) ขวา (Content) */
+/* ============================
+   Layout & Main Structure
+============================ */
 .ad-layout {
   display: flex;
   min-height: 100vh;
@@ -132,76 +10,145 @@
   font-family: 'Inter', sans-serif;
 }
 
-/* === Sidebar (เมนูซ้าย) === */
+.ad-main {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  height: 100vh; /* ให้ scroll ได้เฉพาะส่วนเนื้อหา */
+}
+
+/* ============================
+   Sidebar (เมนูซ้าย)
+============================ */
 .ad-sidebar {
   width: 260px;
   background: #1e293b; /* สีน้ำเงินเข้ม */
   color: #fff;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 24px 16px;
   flex-shrink: 0;
 }
 
 .ad-brand {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 800;
-  color: #f97316; /* สีส้ม TripSync */
-  margin-bottom: 40px;
+  color: #f97316; /* สีส้ม */
+  margin-bottom: 30px;
   display: flex;
   align-items: center;
   gap: 10px;
+  padding-left: 8px;
+}
+
+.ad-brand-badge {
+  font-size: 10px;
+  background: #334155;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #fff;
+  letter-spacing: 0.5px;
 }
 
 .ad-menu {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .ad-menu-item {
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  color: #94a3b8;
+  color: #94a3b8; /* สีเทา */
   font-weight: 500;
+  text-align: left;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: all 0.2s;
-  background: transparent;
-  border: none;
-  text-align: left;
-  font-size: 15px;
 }
 
 .ad-menu-item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
   color: #fff;
 }
 
 .ad-menu-item.active {
   background: #f97316;
   color: #fff;
+  font-weight: 600;
   box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
 }
 
-/* === Main Content (ส่วนเนื้อหาขวา) === */
-.ad-main {
-  flex: 1;
-  padding: 30px;
-  overflow-y: auto;
-}
-
+/* ============================
+   Header (ส่วนหัวเนื้อหา)
+============================ */
 .ad-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   margin-bottom: 24px;
 }
-.ad-page-title { margin: 0; font-size: 28px; color: #0f172a; }
 
-/* === Tables (ตารางสวยๆ) === */
+.ad-page-title {
+  margin: 0;
+  font-size: 26px;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.ad-admin-badge {
+  font-weight: 600;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* ============================
+   Stats Cards (กล่องสถิติ)
+============================ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  transition: transform 0.2s;
+}
+.stat-card:hover { transform: translateY(-2px); }
+
+.stat-label {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.text-blue { color: #3b82f6; }
+.text-orange { color: #f97316; }
+.text-green { color: #10b981; }
+
+/* ============================
+   Tables & Lists (ตาราง User)
+============================ */
 .ad-table-card {
   background: #fff;
   border-radius: 16px;
@@ -221,50 +168,200 @@
   padding: 16px;
   font-size: 13px;
   color: #64748b;
-  font-weight: 700;
+  font-weight: 600;
   border-bottom: 1px solid #e2e8f0;
 }
 
 .ad-table td {
   padding: 16px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #f1f5f9;
   font-size: 14px;
   color: #334155;
   vertical-align: middle;
 }
 
 .ad-table tr:last-child td { border-bottom: none; }
-.ad-table tr:hover { background-color: #f8fafc; }
+.ad-table tr:hover { background-color: #fcfcfc; }
 
-/* Badges */
-.badge {
-  padding: 4px 10px;
-  border-radius: 99px;
-  font-size: 12px;
+.user-name { font-weight: 600; color: #0f172a; }
+.user-sub { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+
+.ad-empty {
+  padding: 40px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* ============================
+   Driver Cards (การ์ดคนขับ)
+============================ */
+.driver-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.driver-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.driver-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.driver-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.driver-title {
+  margin: 0;
+  font-size: 18px;
+  color: #1e293b;
   font-weight: 700;
 }
-.badge-user { background: #e0f2fe; color: #0284c7; }
-.badge-driver { background: #dcfce7; color: #16a34a; }
-.badge-admin { background: #fef3c7; color: #d97706; }
 
-/* Buttons inside table */
+.driver-actions {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  gap: 10px;
+}
+
+/* ============================
+   Buttons & Badges
+============================ */
 .btn-xs {
-  padding: 6px 12px;
-  font-size: 12px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
   border: 1px solid #cbd5e1;
   background: #fff;
   cursor: pointer;
-  margin-right: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
-.btn-xs:hover { background: #f1f5f9; }
-.btn-xs.danger { color: #ef4444; border-color: #fca5a5; }
-.btn-xs.danger:hover { background: #fef2f2; }
+.btn-xs:hover { background: #f8fafc; border-color: #94a3b8; }
 
-/* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-bottom: 30px;
+.btn-approve {
+  background: #10b981;
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
 }
+.btn-approve:hover { background: #059669; transform: translateY(-1px); }
+
+.btn-danger {
+  color: #ef4444;
+  border-color: #fca5a5;
+}
+.btn-danger:hover { background: #fef2f2; border-color: #ef4444; }
+
+/* Badges Status */
+.badge {
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Role Badges */
+.badge-admin { background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; }
+.badge-user { background: #f0f9ff; color: #0369a1; border: 1px solid #e0f2fe; }
+.badge-driver { background: #f0fdf4; color: #15803d; border: 1px solid #dcfce7; }
+
+/* Driver Status Badges */
+.badge-pending { background: #fffbeb; color: #b45309; border: 1px solid #fef3c7; }
+.badge-approved { background: #f0fdf4; color: #15803d; border: 1px solid #dcfce7; }
+.badge-rejected { background: #fef2f2; color: #b91c1c; border: 1px solid #fee2e2; }
+.badge-suspended { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+.modal-header h3 { margin: 0; font-size: 18px; }
+
+.btn-close {
+  background: none; border: none; font-size: 24px; cursor: pointer; color: #94a3b8;
+}
+
+.info-row {
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #334155;
+  border-bottom: 1px dashed #f1f5f9;
+  padding-bottom: 8px;
+}
+
+/* Select Role Style */
+.ad-select-role {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+.text-red { color: #ef4444; font-weight: bold; }
+.text-green { color: #10b981; font-weight: bold; }
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 9999;
+}
+.modal-content {
+  background: #fff; padding: 24px; border-radius: 16px; width: 90%; max-width: 500px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+}
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;
+}
+.btn-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #94a3b8; }
+.ad-select-role { padding: 6px; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer; }
+.text-red { color: #ef4444; font-weight: bold; }
+.text-green { color: #10b981; font-weight: bold; }
