@@ -1,5 +1,5 @@
 import './Navbar.css'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom' // ✅ เพิ่ม useNavigate
 import { useSession } from '../../../hooks/useSession.jsx'
 import { useEffect, useRef, useState, useMemo } from 'react'
 
@@ -17,32 +17,24 @@ function getLSUser() {
 
 export default function Navbar() {
   const { session, logout } = useSession()
+  const navigate = useNavigate() // ✅ ใช้ตัวนี้แทน window.location
 
-  // ✅ ทุกคนเป็น user เหมือนกันหมด → เช็คแค่ login/token
   const isAuthed = !!session?.token
-
-  // ✅ ดึง user จาก localStorage (เพื่อให้ navbar เปลี่ยนทันทีหลังแก้โปรไฟล์)
   const [lsUser, setLsUser] = useState(() => getLSUser())
 
   useEffect(() => {
     const sync = () => setLsUser(getLSUser())
-
-    // แท็บเดียวกัน: เราจะ dispatch event นี้เองหลัง setItem
     window.addEventListener('ts_user_updated', sync)
-
-    // คนละแท็บ: storage event จะทำงาน
     const onStorage = (e) => {
       if (e.key === 'ts_user') sync()
     }
     window.addEventListener('storage', onStorage)
-
     return () => {
       window.removeEventListener('ts_user_updated', sync)
       window.removeEventListener('storage', onStorage)
     }
   }, [])
 
-  // ✅ รวม user: เอา localStorage มาก่อน (ล่าสุดสุด), ถ้าไม่มีค่อย fallback ไป session
   const mergedUser = useMemo(() => {
     return {
       ...(session?.user || {}),
@@ -57,14 +49,12 @@ export default function Navbar() {
     }
   }, [session, lsUser])
 
-  // ✅ ชื่อที่แสดง (อันนี้คือมุมขวาบน)
   const displayName =
     mergedUser?.username ||
     mergedUser?.name ||
     mergedUser?.email ||
     'ผู้ใช้'
 
-  // ===== dropdown states =====
   const [aboutOpen, setAboutOpen] = useState(false)
   const [serviceOpen, setServiceOpen] = useState(false)
   const [userOpen, setUserOpen] = useState(false)
@@ -97,15 +87,13 @@ export default function Navbar() {
   const handleLogout = () => {
     logout()
     closeAll()
-
-    // กันเหนียว: ล้าง localStorage user ด้วย
     localStorage.removeItem('ts_user')
     window.dispatchEvent(new Event('ts_user_updated'))
-
-    window.location.href = '/GPS-Trip/login'
+    
+    // ✅ แก้ตรงนี้: ใช้ navigate ไปหน้า login ปกติ
+    navigate('/login')
   }
 
-  // ✅ ปุ่มหลัก: ถ้า login แล้ว → ไปจองทริป, ไม่ login → หน้าแรก
   const primary = !isAuthed
     ? { to: '/', label: 'หน้าแรก' }
     : { to: '/booking', label: 'เริ่มจองทริป' }
@@ -113,18 +101,15 @@ export default function Navbar() {
   return (
     <header className="ts-nav">
       <div className="ts-nav__inner">
-        {/* Brand */}
         <NavLink to="/" className="ts-nav__brand" onClick={closeAll}>
           TripSync
         </NavLink>
 
         <nav className="ts-nav__menu">
-          {/* ปุ่มหลัก */}
           <NavLink to={primary.to} className="ts-nav__link" onClick={closeAll}>
             {primary.label}
           </NavLink>
 
-          {/* ===== เกี่ยวกับเรา ▼ ===== */}
           <div className="ts-dd" ref={aboutRef}>
             <button
               type="button"
@@ -158,12 +143,10 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* ตารางเดินรถ */}
           <NavLink to="/schedule" className="ts-nav__link" onClick={closeAll}>
             ตารางเดินรถ
           </NavLink>
 
-          {/* ===== บริการของเรา ▼ ===== */}
           <div className="ts-dd" ref={serviceRef}>
             <button
               type="button"
@@ -200,19 +183,18 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* ติดต่อเรา */}
           <NavLink to="/contact" className="ts-nav__link" onClick={closeAll}>
             ติดต่อเรา
           </NavLink>
 
-          {/* ===== ขวาสุด: Login หรือเมนูผู้ใช้ ===== */}
           {!isAuthed ? (
             <button
               type="button"
               className="ts-nav__btn"
               onClick={() => {
                 closeAll()
-                window.location.href = '/GPS-Trip/login'
+                // ✅ แก้ตรงนี้: ไปหน้า login ตรงๆ
+                navigate('/login')
               }}
             >
               เข้าสู่ระบบ

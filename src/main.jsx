@@ -11,7 +11,8 @@ import { SessionProvider } from './hooks/useSession.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter basename="/GPS-Trip/">
+    {/* 👈 2. ลบ basename="/GPS-Trip/" ทิ้งไปเลย หรือแก้เป็น "/" */}
+    <BrowserRouter> 
       <SessionProvider>
         <App />
       </SessionProvider>

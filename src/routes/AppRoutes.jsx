@@ -56,8 +56,9 @@ export default function AppRoutes() {
         }
       />
 
+      {/* ✅✅✅ แก้ตรงนี้ครับ: จาก "/admin" เป็น "/admin/dashboard" */}
       <Route
-        path="/admin"
+        path="/admin/dashboard"
         element={
           <ProtectedRoute>
             <AdminDashboardPage />
