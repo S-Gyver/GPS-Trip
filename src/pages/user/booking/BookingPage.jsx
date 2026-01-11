@@ -7,7 +7,7 @@ import { useForm, useFieldArray } from 'react-hook-form'
 import { useBookingLogic } from '../useBookingForm'
 import { useNavigate } from 'react-router-dom'
 
-// ✅ Import Alerts (จากไฟล์ที่คุณเตรียมไว้)
+// ✅ Import Alerts
 import { alertSuccess, alertError, alertWarn, confirmAction } from '../ui/alerts'
 
 // sections
@@ -104,7 +104,7 @@ export default function BookingPage() {
     }, { shouldFocus: false }) 
   }
 
-  // ✅ เปลี่ยนจาก alert() ธรรมดา เป็น alertWarn()
+  // ✅ เปลี่ยนจาก alert() เป็น alertWarn()
   const goNext = async () => {
     if (loading) return
     let ok = true
@@ -114,7 +114,6 @@ export default function BookingPage() {
       const driverId = watch('selectedDriverId');
       
       if (!driverId) { 
-         // ⚠️ แจ้งเตือนสวยๆ
          await alertWarn('กรุณาเลือกคนขับ', 'โปรดเลือกรถและคนขับก่อนดำเนินการต่อ')
          return; 
       }
@@ -145,9 +144,9 @@ export default function BookingPage() {
 
   const goBack = () => setStep((s) => Math.max(s - 1, 1))
 
-  // 🔥🔥🔥 ฟังก์ชันยืนยันการจอง (ใช้ confirmAction + alertSuccess) 🔥🔥🔥
+  // 🔥🔥🔥 ฟังก์ชันยืนยันการจอง (แก้ไขใหม่) 🔥🔥🔥
   const onSubmit = async (data) => {
-     // 1. ถามยืนยันก่อน
+     // 1. ถามยืนยัน
      const isConfirmed = await confirmAction({
         title: 'ยืนยันการจอง?',
         text: 'กรุณาตรวจสอบข้อมูลให้ถูกต้องก่อนยืนยัน',
@@ -155,14 +154,17 @@ export default function BookingPage() {
         cancelText: 'ยกเลิก'
      })
 
-     if (!isConfirmed) return; // ถ้ากด "ยกเลิก" ก็จบตรงนี้
+     if (!isConfirmed) return; 
 
      try {
         const res = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            // ✅ สำคัญมาก: เพิ่มบรรทัดนี้ เพื่อส่ง Session/Cookie ไปให้ PHP รู้ว่าใครล็อกอิน
+            credentials: 'include', 
+            
             body: JSON.stringify({
-                userId: 41, 
+                // ❌ ลบ userId: 41 ออกแล้ว (ให้ PHP ไปอ่านจาก Session เอง)
                 
                 selectedDriverId: data.selectedDriverId,
                 vehicleType: data.vehicleType,
@@ -192,11 +194,9 @@ export default function BookingPage() {
         const json = await res.json();
 
         if (json.ok) {
-            // ✅ 2. แจ้งเตือนสำเร็จสวยๆ
             await alertSuccess('จองสำเร็จเรียบร้อย!', `รหัสใบจอง: ${json.id}`)
             navigate('/trips'); 
         } else {
-            // ❌ 3. แจ้งเตือน Error สวยๆ
             await alertError('บันทึกไม่สำเร็จ', json.message)
         }
 

@@ -1,5 +1,5 @@
 import './Navbar.css'
-import { NavLink, useNavigate } from 'react-router-dom' // ✅ เพิ่ม useNavigate
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useSession } from '../../../hooks/useSession.jsx'
 import { useEffect, useRef, useState, useMemo } from 'react'
 
@@ -17,7 +17,7 @@ function getLSUser() {
 
 export default function Navbar() {
   const { session, logout } = useSession()
-  const navigate = useNavigate() // ✅ ใช้ตัวนี้แทน window.location
+  const navigate = useNavigate()
 
   const isAuthed = !!session?.token
   const [lsUser, setLsUser] = useState(() => getLSUser())
@@ -89,8 +89,6 @@ export default function Navbar() {
     closeAll()
     localStorage.removeItem('ts_user')
     window.dispatchEvent(new Event('ts_user_updated'))
-    
-    // ✅ แก้ตรงนี้: ใช้ navigate ไปหน้า login ปกติ
     navigate('/login')
   }
 
@@ -110,6 +108,13 @@ export default function Navbar() {
             {primary.label}
           </NavLink>
 
+          {/* ✅✅✅ เหลือแค่ "ขอร่วมทาง" อันเดียวครับ (ลบตารางงานรถออกแล้ว) */}
+          <NavLink to="/join-trips" className="ts-nav__link" onClick={closeAll}>
+            ขอร่วมทาง
+          </NavLink>
+          {/* ==================================== */}
+
+          {/* --- Dropdown เกี่ยวกับเรา --- */}
           <div className="ts-dd" ref={aboutRef}>
             <button
               type="button"
@@ -143,10 +148,7 @@ export default function Navbar() {
             )}
           </div>
 
-          <NavLink to="/schedule" className="ts-nav__link" onClick={closeAll}>
-            ตารางเดินรถ
-          </NavLink>
-
+          {/* --- Dropdown บริการของเรา --- */}
           <div className="ts-dd" ref={serviceRef}>
             <button
               type="button"
@@ -187,13 +189,13 @@ export default function Navbar() {
             ติดต่อเรา
           </NavLink>
 
+          {/* --- ส่วน User / Login --- */}
           {!isAuthed ? (
             <button
               type="button"
               className="ts-nav__btn"
               onClick={() => {
                 closeAll()
-                // ✅ แก้ตรงนี้: ไปหน้า login ตรงๆ
                 navigate('/login')
               }}
             >

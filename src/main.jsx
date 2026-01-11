@@ -1,4 +1,3 @@
-// src/main.jsx
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
@@ -11,7 +10,6 @@ import { SessionProvider } from './hooks/useSession.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* 👈 2. ลบ basename="/GPS-Trip/" ทิ้งไปเลย หรือแก้เป็น "/" */}
     <BrowserRouter> 
       <SessionProvider>
         <App />

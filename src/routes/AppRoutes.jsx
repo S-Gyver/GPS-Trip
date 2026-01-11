@@ -6,15 +6,20 @@ import HomePage from '../pages/home/HomePage'
 import LoginPage from '../pages/auth/LoginPage'
 import RegisterPage from '../pages/auth/RegisterPage'
 
+// User Pages
 import BookingPage from '../pages/user/booking/BookingPage'
 import BookingStatusPage from '../pages/user/bookingStatus/BookingStatusPage'
 import TripsHistoryPage from '../pages/user/trips/TripsHistoryPage'
-
-import AdminLoginPage from '../pages/admin/AdminLoginPage'
-import AdminDashboardPage from '../pages/admin/AdminDashboardPage'
-
 import UserProfilePage from '../pages/user/profile/UserProfilePage'
 
+// ✅ หน้าใหม่ที่เพิ่มเข้ามา
+import JoinTripsPage from '../pages/join/JoinTripsPage'
+import CarSchedulePage from '../pages/schedule/CarSchedulePage'
+import JoinRequestPage from '../pages/join/JoinRequestPage' // 👈 เพิ่ม Import นี้
+
+// Admin & Driver Pages
+import AdminLoginPage from '../pages/admin/AdminLoginPage'
+import AdminDashboardPage from '../pages/admin/AdminDashboardPage'
 import DriverRegisterPage from '../pages/driver/DriverRegisterPage'
 
 export default function AppRoutes() {
@@ -28,7 +33,7 @@ export default function AppRoutes() {
       {/* ===== Admin login ===== */}
       <Route path="/admin/login" element={<AdminLoginPage />} />
 
-      {/* ===== Protected (login เท่านั้น) ===== */}
+      {/* ===== Protected (Login Required) ===== */}
       <Route
         path="/booking"
         element={
@@ -56,7 +61,46 @@ export default function AppRoutes() {
         }
       />
 
-      {/* ✅✅✅ แก้ตรงนี้ครับ: จาก "/admin" เป็น "/admin/dashboard" */}
+      {/* ✅✅✅ เพิ่ม Route ใหม่: หาเพื่อนร่วมทาง */}
+      <Route
+        path="/join-trips"
+        element={
+          <ProtectedRoute>
+            <JoinTripsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* ✅✅✅ เพิ่ม Route ใหม่: ฟอร์มขอร่วมทาง (กดจาก JoinTripsPage มาหน้านี้) */}
+      <Route
+        path="/join-request"
+        element={
+          <ProtectedRoute>
+            <JoinRequestPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* ✅✅✅ เพิ่ม Route ใหม่: ตารางงานรถ */}
+      <Route
+        path="/schedule"
+        element={
+          <ProtectedRoute>
+            <CarSchedulePage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <UserProfilePage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* ===== Admin & Driver ===== */}
       <Route
         path="/admin/dashboard"
         element={
@@ -71,15 +115,6 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <DriverRegisterPage />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <UserProfilePage />
           </ProtectedRoute>
         }
       />
