@@ -1,132 +1,127 @@
-import { useEffect } from 'react'
 import Input from '../../../../components/ui/Input/Input'
 import DriverPickList from './DriverPickList'
 
 export default function StepTripInfo({ register, errors, watch, setValue }) {
-    const vehicleType = watch('vehicleType') // '' | van | bus | car
-    const tripType = watch('tripType')       // oneway | roundtrip
+  const vehicleType = watch('vehicleType')
+  const tripType = watch('tripType')
+  const selectedDriverId = watch('selectedDriverId')
 
-    // ✅ ถ้าเปลี่ยนประเภทรถ ให้ล้างคนขับที่เลือกไว้
-    useEffect(() => {
-        setValue('selectedDriverId', '', { shouldDirty: true })
-    }, [vehicleType, setValue])
+  return (
+    <>
+      <div className="bk-grid-top">
+        {/* 1. ประเภทรถ */}
+        <div className="bk-section">
+          <div className="bk-label">
+            ประเภทรถ <span style={{ color: 'red' }}>*</span>
+          </div>
+          <div className="bk-options">
+            {['van', 'bus', 'car'].map((type) => (
+              <button
+                key={type}
+                type="button"
+                className={`bk-option ${vehicleType === type ? 'is-active' : ''}`}
+                onClick={() => {
+                  if (vehicleType !== type) {
+                    setValue('selectedDriverId', '', { shouldDirty: true })
+                  }
+                  setValue('vehicleType', type, { shouldValidate: true })
+                }}
+              >
+                {type === 'van' && '🚐 รถตู้'}
+                {type === 'bus' && '🚌 รถบัส'}
+                {type === 'car' && '🚗 รถยนต์'}
+              </button>
+            ))}
+          </div>
+          {errors.vehicleType && <div className="bk-err">{errors.vehicleType.message}</div>}
+          <input type="hidden" {...register('vehicleType', { required: 'กรุณาเลือกประเภทรถ' })} />
+        </div>
 
-    return (
-        <>
-            <div className="bk-grid-top">
-                <div className="bk-section">
-                    <div className="bk-label">ประเภทรถ</div>
-                    <div className="bk-options">
-                        {['van', 'bus', 'car'].map((type) => (
-                            <button
-                                type="button"
-                                key={type}
-                                className={`bk-option ${vehicleType === type ? 'is-active' : ''}`}
-                                onClick={() => setValue('vehicleType', type, { shouldDirty: true })}
-                            >
-                                {type === 'van' && '🚐 รถตู้'}
-                                {type === 'bus' && '🚌 รถบัส'}
-                                {type === 'car' && '🚗 รถยนต์'}
-                            </button>
-                        ))}
-                    </div>
+        {/* 2. รูปแบบการเดินทาง */}
+        <div className="bk-section">
+          <div className="bk-label">
+            รูปแบบการเดินทาง <span style={{ color: 'red' }}>*</span>
+          </div>
+          <div className="bk-options">
+            {['oneway', 'roundtrip'].map((type) => (
+              <button
+                key={type}
+                type="button"
+                className={`bk-option ${tripType === type ? 'is-active' : ''}`}
+                onClick={() => setValue('tripType', type, { shouldValidate: true })}
+              >
+                {type === 'oneway' ? 'เที่ยวเดียว' : 'ไป-กลับ'}
+              </button>
+            ))}
+          </div>
+          {errors.tripType && <div className="bk-err">{errors.tripType.message}</div>}
+          <input type="hidden" {...register('tripType', { required: 'กรุณาเลือกรูปแบบการเดินทาง' })} />
+        </div>
 
-                    {/* ✅ ถ้ายังไม่เลือก ให้ขึ้นข้อความนำทาง (ถ้าไม่อยากมี ก็ตัดทิ้งได้) */}
-                    {!vehicleType && (
-                        <div className="bk-hint">กรุณาเลือกประเภทรถ เพื่อแสดงรายการรถและคนขับ</div>
-                    )}
-                </div>
+        {/* 3. จำนวนผู้โดยสาร (แก้ไขล่าสุด: ขอบแดงเท่านั้น) */}
+        <div className="bk-section">
+          <Input
+            label="จำนวนผู้โดยสาร"
+            type="number"
+            min="1"
+            placeholder="โปรดระบุ" // ใช้คำเดิม ไม่เปลี่ยนตาม error
+            
+            // ❌ ไม่ส่ง prop error เพื่อซ่อนข้อความแจ้งเตือนด้านล่าง
+            // error={errors.passengersCount?.message} 
+            
+            // ✅ ใส่ style บังคับขอบแดงเมื่อมี error
+            style={errors.passengersCount ? { borderColor: '#ef4444' } : {}}
+            
+            {...register('passengersCount', {
+              required: true, // ระบุว่าจำเป็นต้องกรอก
+              valueAsNumber: true,
+              min: { value: 1, message: '' },
+            })}
+          />
+        </div>
+      </div>
 
-                <div className="bk-section">
-                    <div className="bk-label">รูปแบบการเดินทาง</div>
-                    <div className="bk-options">
-                        {['oneway', 'roundtrip'].map((type) => (
-                            <button
-                                type="button"
-                                key={type}
-                                className={`bk-option ${tripType === type ? 'is-active' : ''}`}
-                                onClick={() => setValue('tripType', type, { shouldDirty: true })}
-                            >
-                                {type === 'oneway' ? 'เที่ยวเดียว' : 'ไป-กลับ'}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+      {/* 4. วัตถุประสงค์ */}
+      <div className="bk-section" style={{ marginTop: '20px' }}>
+        <Input
+          label="วัตถุประสงค์การเดินทาง"
+          placeholder="เช่น ไปประชุม / ออกหน่วย / เยี่ยมชมสถานประกอบการ"
+          error={errors.purpose?.message}
+          {...register('purpose', {
+            required: 'กรุณากรอกวัตถุประสงค์การเดินทาง',
+            validate: (v) => (v || '').trim().length > 0 || 'กรุณากรอกวัตถุประสงค์การเดินทาง',
+          })}
+        />
+      </div>
 
-                <div className="bk-section">
-                    <Input
-                        label="จำนวนผู้โดยสาร (คณะ/หน่วยงานของผู้จอง)"
-                        type="number"
-                        min="1"
-                        error={errors.passengersCount?.message}
-                        {...register('passengersCount', {
-                            required: 'กรุณาระบุจำนวนผู้โดยสาร',
-                            valueAsNumber: true,
-                            min: { value: 1, message: 'อย่างน้อย 1 คน' },
-                        })}
-                    />
-                </div>
-            </div>
+      <hr className="bk-divider" style={{ margin: '30px 0', borderTop: '1px dashed #ddd' }} />
 
-            <div className="bk-grid">
-                <Input
-                    label="วันเดินทางขาไป"
-                    type="date"
-                    error={errors.travelDate?.message}
-                    {...register('travelDate', { required: 'กรุณาเลือกวันเดินทาง' })}
-                />
-
-                <Input
-                    label="ช่วงเวลาเดินทางขาไป"
-                    type="time"
-                    error={errors.departTime?.message}
-                    {...register('departTime', { required: 'กรุณาระบุเวลาเดินทาง' })}
-                />
-            </div>
-
-
-            {/* ✅ โชว์ขากลับเฉพาะไป-กลับ และชื่อ field ต้องไม่ซ้ำ */}
-            {tripType === 'roundtrip' && (
-                <div className="bk-grid">
-                    <Input
-                        label="วันเดินทางขากลับ"
-                        type="date"
-                        error={errors.returnDate?.message}
-                        {...register('returnDate', { required: 'กรุณาเลือกวันเดินทางขากลับ' })}
-                    />
-
-                    <Input
-                        label="ช่วงเวลาเดินทางขากลับ"
-                        type="time"
-                        error={errors.returnTime?.message}
-                        {...register('returnTime', { required: 'กรุณาระบุเวลาเดินทางขากลับ' })}
-                    />
-                </div>
-            )}
-
-            <Input
-                label="วัตถุประสงค์การเดินทาง"
-                placeholder="เช่น ไปประชุม / ออกหน่วย / เยี่ยมชมสถานประกอบการ"
-                error={errors.purpose?.message}
-                {...register('purpose', {
-                    required: 'กรุณากรอกวัตถุประสงค์การเดินทาง',
-                    validate: (v) => v.trim().length > 0 || 'กรุณากรอกวัตถุประสงค์การเดินทาง',
-                })}
-            />
-
-            {/* ✅ ยังไม่เลือกประเภทรถ = ยังไม่โชว์ DriverPickList */}
-            {vehicleType && (
-                <DriverPickList
-                    vehicleType={vehicleType} // ✅ ส่งประเภทไปกรองข้อมูล
-                    selectedId={watch('selectedDriverId')}
-                    onSelect={(id) => setValue('selectedDriverId', id, { shouldDirty: true })}
-                    onOpenDetail={(driver) => {
-                        alert(
-                            `รายละเอียด\nชื่อ: ${driver.name}\nเบอร์: ${driver.phone}\nทะเบียน: ${driver.plate}\nที่นั่ง: ${driver.seats}`
-                        )
-                    }}
-                />
-            )}
-        </>
-    )
+      {/* 5. เลือกรถ/คนขับ */}
+      <div className="bk-section">
+        {!vehicleType ? (
+          <div
+            style={{
+              padding: '40px',
+              textAlign: 'center',
+              background: '#f8fafc',
+              borderRadius: '12px',
+              border: '2px dashed #cbd5e1',
+              color: '#64748b',
+            }}
+          >
+            <h3 style={{ marginTop: 0, color: '#475569' }}>🚗 เลือกรถ/คนขับ</h3>
+            <p>
+              กรุณาเลือก <b>"ประเภทรถ"</b> ด้านบนก่อน เพื่อแสดงรายการรถที่ว่าง
+            </p>
+          </div>
+        ) : (
+          <DriverPickList
+            vehicleType={vehicleType}
+            selectedId={selectedDriverId}
+            onSelect={(id) => setValue('selectedDriverId', id, { shouldDirty: true })}
+          />
+        )}
+      </div>
+    </>
+  )
 }

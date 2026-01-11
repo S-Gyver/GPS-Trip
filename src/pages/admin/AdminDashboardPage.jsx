@@ -20,13 +20,21 @@ export default function AdminDashboardPage() {
     localStorage.setItem('admin_active_tab', activeTab)
   }, [activeTab])
 
-  const [stats, setStats] = useState({ total_users: 0, pending_drivers: 0, today_trips: 0 })
+  // เพิ่ม total_drivers เข้าไปใน state stats
+  const [stats, setStats] = useState({ 
+    total_users: 0, 
+    total_drivers: 0, 
+    pending_drivers: 0, 
+    today_trips: 0 
+  })
 
   useEffect(() => {
     if (activeTab === 'dashboard') {
         fetch('http://localhost/tripsync_api/api/admin/get_dashboard_stats.php', { credentials: 'include' })
           .then(r => r.json())
-          .then(d => { if (d.ok) setStats(d.data) })
+          .then(d => { 
+            if (d.ok) setStats(d.data) 
+          })
           .catch(console.error)
     }
   }, [activeTab])
@@ -38,22 +46,41 @@ export default function AdminDashboardPage() {
     navigate('/login')
   }
 
-  // ฟังก์ชัน render เนื้อหาตาม Tab (จะได้ไม่รกใน return หลัก)
+  // ฟังก์ชัน render เนื้อหาตาม Tab
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
         return (
           <div className="stats-grid">
-            <div className="stat-card"><div className="stat-label">USERS ทั้งหมด</div><div className="stat-value text-blue">{stats.total_users}</div></div>
-            <div className="stat-card"><div className="stat-label">คนขับรอตรวจสอบ</div><div className="stat-value text-orange">{stats.pending_drivers}</div></div>
-            <div className="stat-card"><div className="stat-label">ทริปวันนี้</div><div className="stat-value text-green">{stats.today_trips}</div></div>
+            {/* 1. คลิกแล้วไปหน้าจัดการ User */}
+            <div className="stat-card" onClick={() => setActiveTab('users')} style={{ cursor: 'pointer' }}>
+              <div className="stat-label">USERS ทั้งหมด</div>
+              <div className="stat-value text-blue">{stats.total_users}</div>
+            </div>
+            
+            {/* 2. คลิกแล้วไปหน้าจัดการคนขับ (รายชื่อคนขับ) */}
+            <div className="stat-card" onClick={() => setActiveTab('drivers')} style={{ cursor: 'pointer' }}>
+              <div className="stat-label">จำนวน คนขับ</div>
+              <div className="stat-value" style={{color: '#6366f1'}}>{stats.total_drivers}</div>
+            </div>
+
+            {/* 3. คลิกแล้วไปหน้าจัดการคนขับ (รออนุมัติ) */}
+            <div className="stat-card" onClick={() => setActiveTab('drivers')} style={{ cursor: 'pointer' }}>
+              <div className="stat-label">คนขับรอตรวจสอบ</div>
+              <div className="stat-value text-orange">{stats.pending_drivers}</div>
+            </div>
+
+            {/* 4. คลิกแล้วไปหน้าจัดการทริป */}
+            <div className="stat-card" onClick={() => setActiveTab('trips')} style={{ cursor: 'pointer' }}>
+              <div className="stat-label">ทริปวันนี้</div>
+              <div className="stat-value text-green">{stats.today_trips}</div>
+            </div>
           </div>
         )
       case 'users': return <UsersTable />
       case 'drivers': return <DriversManagement />
       case 'trips': return <TripsManagement />
       
-      // --- หน้าจอจำลองสำหรับฟีเจอร์ใหม่ ---
       case 'analytics':
         return <div className="ad-table-card ad-empty">📊 ส่วนแสดงกราฟและสถิติเชิงลึก (Coming Soon)</div>
       case 'export':
@@ -69,7 +96,6 @@ export default function AdminDashboardPage() {
     }
   }
 
-  // Helper สำหรับเปลี่ยนชื่อหัวข้อ
   const getPageTitle = () => {
     const titles = {
         dashboard: 'Dashboard Overview',
@@ -87,64 +113,37 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="ad-layout">
-      {/* --- Sidebar --- */}
       <aside className="ad-sidebar">
         <div className="ad-brand"><span>⚡ TripSync</span><span className="ad-brand-badge">ADMIN</span></div>
         
         <nav className="ad-menu">
-          {/* กลุ่มหลัก */}
-          <button className={`ad-menu-item ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>
-            📊 ภาพรวม
-          </button>
-          <button className={`ad-menu-item ${activeTab === 'users' ? 'active' : ''}`} onClick={() => setActiveTab('users')}>
-            👥 จัดการ User
-          </button>
-          <button className={`ad-menu-item ${activeTab === 'drivers' ? 'active' : ''}`} onClick={() => setActiveTab('drivers')}>
-            🪪 อนุมัติคนขับ
-          </button>
-          <button className={`ad-menu-item ${activeTab === 'trips' ? 'active' : ''}`} onClick={() => setActiveTab('trips')}>
-            📅 จัดการทริป
-          </button>
+          <button className={`ad-menu-item ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>📊 ภาพรวม</button>
+          <button className={`ad-menu-item ${activeTab === 'users' ? 'active' : ''}`} onClick={() => setActiveTab('users')}>👥 จัดการ User</button>
+          <button className={`ad-menu-item ${activeTab === 'drivers' ? 'active' : ''}`} onClick={() => setActiveTab('drivers')}>🪪 อนุมัติคนขับ</button>
+          <button className={`ad-menu-item ${activeTab === 'trips' ? 'active' : ''}`} onClick={() => setActiveTab('trips')}>📅 จัดการทริป</button>
 
-          {/* เส้นคั่น */}
           <div style={{height: 1, background: '#334155', margin: '15px 0 10px 0', opacity: 0.5}}></div>
           <div style={{fontSize: 11, color: '#64748b', paddingLeft: 12, marginBottom: 5, fontWeight: 'bold', textTransform: 'uppercase'}}>Tools & System</div>
 
-          {/* กลุ่มใหม่ที่เพิ่มเข้ามา */}
-          <button className={`ad-menu-item ${activeTab === 'analytics' ? 'active' : ''}`} onClick={() => setActiveTab('analytics')}>
-            📈 Analytics (กราฟ)
-          </button>
-          <button className={`ad-menu-item ${activeTab === 'export' ? 'active' : ''}`} onClick={() => setActiveTab('export')}>
-            📥 Export Data
-          </button>
-          <button className={`ad-menu-item ${activeTab === 'notification' ? 'active' : ''}`} onClick={() => setActiveTab('notification')}>
-            📢 ประกาศ (Notify)
-          </button>
-          <button className={`ad-menu-item ${activeTab === 'audit' ? 'active' : ''}`} onClick={() => setActiveTab('audit')}>
-            📝 Audit Logs
-          </button>
-          <button className={`ad-menu-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}>
-            ⚙️ ตั้งค่า (Settings)
-          </button>
+          <button className={`ad-menu-item ${activeTab === 'analytics' ? 'active' : ''}`} onClick={() => setActiveTab('analytics')}>📈 Analytics (กราฟ)</button>
+          <button className={`ad-menu-item ${activeTab === 'export' ? 'active' : ''}`} onClick={() => setActiveTab('export')}>📥 Export Data</button>
+          <button className={`ad-menu-item ${activeTab === 'notification' ? 'active' : ''}`} onClick={() => setActiveTab('notification')}>📢 ประกาศ (Notify)</button>
+          <button className={`ad-menu-item ${activeTab === 'audit' ? 'active' : ''}`} onClick={() => setActiveTab('audit')}>📝 Audit Logs</button>
+          <button className={`ad-menu-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}>⚙️ ตั้งค่า (Settings)</button>
         </nav>
 
         <div style={{ marginTop: 'auto' }}>
-          <button className="ad-menu-item" onClick={handleLogout} style={{ color: '#f87171' }}>
-            🚪 ออกจากระบบ
-          </button>
+          <button className="ad-menu-item" onClick={handleLogout} style={{ color: '#f87171' }}>🚪 ออกจากระบบ</button>
         </div>
       </aside>
 
-      {/* --- Main Content --- */}
       <main className="ad-main">
         <header className="ad-header">
           <h1 className="ad-page-title">{getPageTitle()}</h1>
           <div className="ad-admin-badge">Admin Portal</div>
         </header>
 
-        {/* เรียกใช้ฟังก์ชัน renderContent เพื่อแสดงผลตาม Tab */}
         {renderContent()}
-
       </main>
     </div>
   )

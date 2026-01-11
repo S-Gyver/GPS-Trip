@@ -24,14 +24,6 @@ export default function StepOneway({
           </div>
         </div>
 
-        <button
-          type="button"
-          className="bk-addday"
-          onClick={addDay}
-          disabled={dayFields.length >= 4}
-        >
-          + เพิ่มวัน
-        </button>
       </div>
 
       {dayFields.map((field, idx) => (
@@ -45,7 +37,6 @@ export default function StepOneway({
         />
       ))}
 
-      <p className="bk-hint">* เพิ่มได้สูงสุด 4 วัน</p>
     </div>
   )
 }
@@ -106,7 +97,7 @@ function DayCard({ idx, removeDay, register, errors, control }) {
       {/* จุดแวะ */}
       <div className="bk-stops">
         <div className="bk-stops-head">
-          <b>จุดแวะ</b>
+          <b>จุดแวะ (ข้ามได้)</b>
           <button
             type="button"
             className="bk-addstop"
@@ -125,7 +116,8 @@ function DayCard({ idx, removeDay, register, errors, control }) {
             />
             <Input
               label="เวลาทำกิจกรรม"
-              type="time"
+              placeholder="เช่น 1.30 = 1ชั่วโมง 30นาที"
+              type="text"
               {...register(`days.${idx}.stops.${sidx}.time`)}
             />
             <button

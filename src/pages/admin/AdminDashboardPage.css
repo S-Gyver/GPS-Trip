@@ -365,3 +365,10 @@
 .ad-select-role { padding: 6px; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer; }
 .text-red { color: #ef4444; font-weight: bold; }
 .text-green { color: #10b981; font-weight: bold; }
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-color: #3b82f6;
+  transition: all 0.2s ease;
+}

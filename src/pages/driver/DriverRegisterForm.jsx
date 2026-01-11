@@ -10,6 +10,7 @@ import { getDriverProfile, commitDriver, uploadDriverFile } from '../driver/hook
 
 import PersonalSection from './components/PersonalSection'
 import VehicleSection from './components/VehicleSection'
+import VehicleImagesSection from './components/VehicleImagesSection' // ✅ เพิ่ม Import นี้
 import DocumentsSection from './components/DocumentsSection'
 import DriverAvatarCard from './components/DriverAvatarCard'
 import DriverFormActions from './components/DriverFormActions'
@@ -37,7 +38,7 @@ export default function DriverRegisterForm() {
 
   const [existingAvatarUrl, setExistingAvatarUrl] = useState('')
 
-  // ✅ path เอกสาร/รูป (เอาไว้โชว์ค้าง + ส่ง commit)
+  // ✅ path เอกสาร/รูป (โชว์ค้าง + ส่ง commit)
   const [docPaths, setDocPaths] = useState({
     driver_avatar: '',
     id_card_img: '',
@@ -46,6 +47,12 @@ export default function DriverRegisterForm() {
     vehicle_reg_img: '',
     insurance_compulsory_img: '',
     insurance_commercial_img: '',
+    // ✅ เพิ่ม state สำหรับรูปรถใหม่ 5 ช่อง
+    vehicle_outside_img: '',
+    vehicle_inside_1: '',
+    vehicle_inside_2: '',
+    vehicle_inside_3: '',
+    vehicle_inside_4: '',
   })
 
   const {
@@ -76,7 +83,7 @@ export default function DriverRegisterForm() {
     },
   })
 
-  // ✅ โหลดข้อมูลเดิมจาก DB เพื่อโชว์ค้าง
+  // ✅ โหลดข้อมูลเดิมจาก DB
   useEffect(() => {
     let alive = true
     ;(async () => {
@@ -115,6 +122,12 @@ export default function DriverRegisterForm() {
             vehicle_reg_img: d.vehicle_reg_img || '',
             insurance_compulsory_img: d.insurance_compulsory_img || '',
             insurance_commercial_img: d.insurance_commercial_img || '',
+            // ✅ Map ข้อมูลรูปรถจาก DB ลง State
+            vehicle_outside_img: d.vehicle_outside_img || '',
+            vehicle_inside_1: d.vehicle_inside_1 || '',
+            vehicle_inside_2: d.vehicle_inside_2 || '',
+            vehicle_inside_3: d.vehicle_inside_3 || '',
+            vehicle_inside_4: d.vehicle_inside_4 || '',
           }
 
           setDocPaths((s) => ({ ...s, ...nextDocPaths }))
@@ -159,7 +172,7 @@ export default function DriverRegisterForm() {
     }
   }
 
-  // ✅ รับ path จาก DocUpload แล้วเก็บ state (โชว์ค้าง + ส่ง commit)
+  // ✅ รับ path จาก DocUpload แล้วเก็บ state
   const handleDocPathChange = (field, path) => {
     setDocPaths((s) => ({ ...s, [field]: path }))
   }
@@ -186,7 +199,7 @@ export default function DriverRegisterForm() {
         driver_license_no: (form.licenseNo || '').trim(),
         vehicle_inspection: (form.inspection || '').trim(),
 
-        // ✅ ส่ง path ที่อัปแล้วทั้งหมด
+        // ✅ ส่ง path ทั้งหมดไป Backend
         files: {
           driver_avatar: docPaths.driver_avatar || '',
           id_card_img: docPaths.id_card_img || '',
@@ -195,6 +208,12 @@ export default function DriverRegisterForm() {
           vehicle_reg_img: docPaths.vehicle_reg_img || '',
           insurance_compulsory_img: docPaths.insurance_compulsory_img || '',
           insurance_commercial_img: docPaths.insurance_commercial_img || '',
+          // --- เพิ่มส่งไป Backend ---
+          vehicle_outside_img: docPaths.vehicle_outside_img || '',
+          vehicle_inside_1: docPaths.vehicle_inside_1 || '',
+          vehicle_inside_2: docPaths.vehicle_inside_2 || '',
+          vehicle_inside_3: docPaths.vehicle_inside_3 || '',
+          vehicle_inside_4: docPaths.vehicle_inside_4 || '',
         },
       }
 
@@ -203,13 +222,6 @@ export default function DriverRegisterForm() {
 
       await alertSuccess('บันทึกสำเร็จ', 'ข้อมูลคนขับถูกบันทึกแล้ว')
 
-      // ถ้าเอยมี file input อื่นๆ ที่อยาก clear ก็ทำเพิ่มได้
-      setValue('docIdCard', null)
-      setValue('docDriverLicense', null)
-      setValue('docCriminal', null)
-      setValue('docRegistration', null)
-      setValue('docPRB', null)
-      setValue('docCommercial', null)
     } catch (e) {
       alertError('บันทึกไม่สำเร็จ', e?.message || 'ลองใหม่อีกครั้ง')
     } finally {
@@ -228,6 +240,12 @@ export default function DriverRegisterForm() {
       vehicle_reg_img: '',
       insurance_compulsory_img: '',
       insurance_commercial_img: '',
+      // ✅ รีเซ็ตค่ารูปรถใหม่
+      vehicle_outside_img: '',
+      vehicle_inside_1: '',
+      vehicle_inside_2: '',
+      vehicle_inside_3: '',
+      vehicle_inside_4: '',
     })
   }
 
@@ -252,9 +270,16 @@ export default function DriverRegisterForm() {
 
       <VehicleSection register={register} errors={errors} submitCount={submitCount} />
 
+      {/* ✅ 6. แทรก Section รูปรถตรงนี้ */}
+      <VehicleImagesSection
+        docPaths={docPaths}
+        onUploaded={handleDocPathChange}
+        disabled={saving}
+      />
+
       <DocumentsSection
         docPaths={docPaths}
-        onUploaded={handleDocPathChange}  // <-- เปลี่ยนจาก onChangePath เป็น onUploaded
+        onUploaded={handleDocPathChange}
         disabled={saving}
       />
 

@@ -73,7 +73,7 @@ export function useAdminDrivers() {
 
     // 4. ฟังก์ชันเปลี่ยนสถานะ
     const updateStatus = async (userId, status) => {
-        if (!window.confirm(`ยืนยันเปลี่ยนสถานะเป็น "${status}" ?`)) return
+        
 
         try {
             const res = await fetch('http://localhost/tripsync_api/api/admin/update_driver_status.php', {

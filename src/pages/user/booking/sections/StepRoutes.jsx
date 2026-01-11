@@ -9,12 +9,31 @@ export default function StepRoutes({
   errors,
   control,
 }) {
+  
+  // ✅ ฟังก์ชันคำนวณวันอัตโนมัติ (เพิ่ม/ลด ตามเลขที่กรอก)
+  const handleDayCountChange = (e) => {
+    const val = parseInt(e.target.value) || 1
+    const count = Math.max(1, Math.min(30, val)) // จำกัด 1-30 วัน
+    const currentDiff = count - dayFields.length
+
+    if (currentDiff > 0) {
+      // เพิ่มวัน (เรียก addDay ตามจำนวนที่ขาด)
+      for (let i = 0; i < currentDiff; i++) addDay()
+    } else if (currentDiff < 0) {
+      // ลดวัน (ลบจากวันท้ายสุด)
+      for (let i = 0; i < Math.abs(currentDiff); i++) {
+        removeDay(dayFields.length - 1 - i)
+      }
+    }
+  }
+
   return (
     <div className="bk-days">
-      <div className="bk-days-head">
+      <div className="bk-days-head" style={{ alignItems: 'flex-end' }}>
         <div>
           <h2>แผนการเดินทางรายวัน</h2>
 
+          {/* ✅ ส่วนเลือกรูปแบบ (เก็บไว้ตามเดิม) */}
           <div className="bk-options" style={{ marginTop: 8 }}>
             <button type="button" className="bk-option" disabled>
               เที่ยวเดียว
@@ -25,17 +44,22 @@ export default function StepRoutes({
           </div>
         </div>
 
-        <button
-          type="button"
-          className="bk-addday"
-          onClick={addDay}
-          disabled={dayFields.length >= 4}
-          title={dayFields.length >= 4 ? 'เพิ่มได้สูงสุด 4 วัน' : 'เพิ่มวัน'}
-        >
-          + เพิ่มวัน
-        </button>
+        {/* ✅ เปลี่ยนจากปุ่มกด เป็นช่องกรอกจำนวนวัน */}
+        <div style={{ width: '150px' }}>
+            <Input
+                label="จำนวนวันเดินทาง"
+                type="number"
+                min="1"
+                max="30"
+                value={dayFields.length} // ให้ตัวเลขตรงกับจำนวนวันปัจจุบันเสมอ
+                onChange={handleDayCountChange}
+                placeholder="ระบุจำนวน"
+                style={{ borderColor: '#f97316' }} // เน้นสีส้ม
+            />
+        </div>
       </div>
 
+      {/* Loop แสดงการ์ดวัน */}
       {dayFields.map((field, idx) => (
         <DayCard
           key={field.id}
@@ -46,13 +70,11 @@ export default function StepRoutes({
           control={control}
         />
       ))}
-
-      <p className="bk-hint">* เพิ่มได้สูงสุด 4 วัน</p>
     </div>
   )
 }
 
-/* ================= Day Card ================= */
+/* ================= Day Card (เหมือนเดิม) ================= */
 
 function DayCard({ idx, removeDay, register, errors, control }) {
   const {
@@ -68,6 +90,7 @@ function DayCard({ idx, removeDay, register, errors, control }) {
     <div className="bk-daycard">
       <div className="bk-daytitle">
         <b>วันที่ {idx + 1}</b>
+        {/* ปุ่มลบรายวัน (ยังเก็บไว้เผื่อ user อยากลบเฉพาะวันนี้) */}
         {idx > 0 && (
           <button type="button" className="bk-remove" onClick={() => removeDay(idx)}>
             ลบวันนี้
@@ -114,7 +137,7 @@ function DayCard({ idx, removeDay, register, errors, control }) {
       {/* ===== จุดแวะ ===== */}
       <div className="bk-stops">
         <div className="bk-stops-head">
-          <b>จุดแวะ</b>
+          <b>จุดแวะ (ข้ามได้)</b>
           <button
             type="button"
             className="bk-addstop"
@@ -133,7 +156,8 @@ function DayCard({ idx, removeDay, register, errors, control }) {
             />
             <Input
               label="เวลาทำกิจกรรม"
-              type="time"
+              placeholder="เช่น 1.30 = 1ขั่วโมง 30นาที"
+              type="text"
               {...register(`days.${idx}.stops.${sidx}.time`)}
             />
             <button

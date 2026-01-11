@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { fireConfirm, fireError, fireSuccess } from '../ui/alerts' // Import Alert
 
 export default function TripsManagement() {
   const [bookings, setBookings] = useState([])
@@ -16,7 +17,13 @@ export default function TripsManagement() {
   useEffect(() => { fetchBookings() }, [])
 
   const updateStatus = async (id, status) => {
-    if (!window.confirm(`ยืนยันเปลี่ยนสถานะเป็น "${status}" ?`)) return
+    // 1. ถามยืนยันก่อน
+    const isConfirmed = await fireConfirm(
+        `ยืนยันการเปลี่ยนสถานะ?`,
+        `คุณต้องการเปลี่ยนสถานะเป็น "${status}" ใช่หรือไม่`
+    )
+    if (!isConfirmed) return
+
     try {
       const res = await fetch('http://localhost/tripsync_api/api/admin/update_booking_status.php', {
         method: 'POST',
@@ -25,10 +32,16 @@ export default function TripsManagement() {
         credentials: 'include'
       })
       const json = await res.json()
+      
       if (json.ok) {
         setBookings(prev => prev.map(b => b.id === id ? { ...b, status } : b))
-      } else alert('เกิดข้อผิดพลาด: ' + json.message)
-    } catch (err) { alert('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้') }
+        fireSuccess('สำเร็จ', `เปลี่ยนสถานะเป็น ${status} เรียบร้อยแล้ว`)
+      } else {
+        fireError('เกิดข้อผิดพลาด', json.message)
+      }
+    } catch (err) { 
+        fireError('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้') 
+    }
   }
 
   if (loading) return <div className="ad-empty">กำลังโหลดรายการจอง...</div>
